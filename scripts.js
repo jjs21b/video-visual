@@ -1,4 +1,3 @@
-// Replace 'YOUR_API_KEY' with the key you received from RAWG
 const apiKey = '57155f6ce0c64cb2bd96909d78c76f58';
 
 function fetchGames() {
