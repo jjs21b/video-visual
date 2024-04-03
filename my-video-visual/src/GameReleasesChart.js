@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import axios from 'axios';
 
+const apiKey = process.env.REACT_APP_API_KEY;
 const GameReleasesChart = ({ year }) => {
   const [gameReleases, setGameReleases] = useState([]);
 
   useEffect(() => {
     const fetchGameReleases = async () => {
       // Adjust the API call as needed based on RAWG's documentation
-      const response = await axios.get(`https://api.rawg.io/api/games?key=57155f6ce0c64cb2bd96909d78c76f58&dates=${year}-01-01,${year}-12-31&ordering=-released`);
+      const response = await axios.get(`https://api.rawg.io/api/games?key=${apiKey}&dates=${year}-01-01,${year}-12-31&ordering=-released`);
       const monthlyData = aggregateDataByMonth(response.data.results);
       setGameReleases(monthlyData);
     };
