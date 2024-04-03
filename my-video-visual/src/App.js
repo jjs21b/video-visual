@@ -5,7 +5,7 @@ import GameReleasesChart from './GameReleasesChart'; // Make sure the path is co
 function App() {
   return (
     <div className="App">
-      <GameReleasesChart year={2021} />
+      <GameReleasesChart year={2022}/>
     </div>
   );
 }

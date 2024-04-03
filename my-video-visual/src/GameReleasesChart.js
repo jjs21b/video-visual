@@ -9,7 +9,7 @@ const GameReleasesChart = ({ year }) => {
   useEffect(() => {
     const fetchGameReleases = async () => {
       // Adjust the API call as needed based on RAWG's documentation
-      const response = await axios.get(`https://api.rawg.io/api/games?key=${apiKey}&dates=${year}-01-01,${year}-12-31&ordering=-released`);
+      const response = await axios.get(`https://api.rawg.io/api/games?key=${apiKey}&dates=${year}-01-01&ordering=-released`);
       const monthlyData = aggregateDataByMonth(response.data.results);
       setGameReleases(monthlyData);
     };
@@ -36,7 +36,7 @@ const GameReleasesChart = ({ year }) => {
       <BarChart width={600} height={300} data={gameReleases}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
-        <YAxis />
+        <YAxis/>
         <Tooltip />
         <Bar dataKey="releases" fill="#8884d8" />
       </BarChart>
