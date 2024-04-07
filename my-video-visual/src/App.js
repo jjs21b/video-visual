@@ -1,13 +1,25 @@
 import './App.css';
-import React from 'react';
-import GameReleasesChart from './GameReleasesChart'; // Make sure the path is correct
+import React, { useState , useEffect} from 'react';
+import ResultsDisplay from './ResultsDisplay'; // Make sure the path is correct
+import Sidebar from './sidebar';
+import fetchGames from './api'
 
-function App() {
+
+const App = () => {
+  const [filters, setFilters] = useState({});
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    fetchGames(filters).then(setGames);
+  }, [filters]);
+
   return (
-    <div className="App">
-      <GameReleasesChart year={2022}/>
+    <div className="app">
+      <Sidebar onFiltersChange={setFilters} />
+      <ResultsDisplay games={games} />
     </div>
   );
-}
+};
+
 
 export default App;

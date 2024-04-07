@@ -2,41 +2,88 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import axios from 'axios';
 
-const apiKey = process.env.REACT_APP_API_KEY;
-const GameReleasesChart = ({ year }) => {
-  const [gameReleases, setGameReleases] = useState([]);
-
-  useEffect(() => {
-    const fetchGameReleases = async () => {
-      // Adjust the API call as needed based on RAWG's documentation
-      const response = await axios.get(`https://api.rawg.io/api/games?key=${apiKey}&dates=${year}-01-01&ordering=-released`);
-      const monthlyData = aggregateDataByMonth(response.data.results);
-      setGameReleases(monthlyData);
-    };
-
-    fetchGameReleases();
-  }, [year]);
-
-  // Function to aggregate game releases by month
-  const aggregateDataByMonth = (games) => {
-    const monthlyCounts = {};
-    games.forEach((game) => {
-      const month = new Date(game.released).getMonth();
-      monthlyCounts[month] = (monthlyCounts[month] || 0) + 1;
+// This function is defined outside of the component because it doesn't rely on any state or props.
+const fetchGamesByYear = async (year, apiKey) => {
+  try {
+    const response = await axios.get(`https://api.rawg.io/api/games`, {
+      params: {
+        key: apiKey,
+        dates: `${year}-01-01,${year}-12-31`,
+        ordering: '-released'
+      }
     });
-    return Object.entries(monthlyCounts).map(([month, count]) => ({
-      month: new Date(0, month).toLocaleString('default', { month: 'short' }),
-      releases: count,
-    }));
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching games data:", error);
+    return [];
+  }
+};
+
+// Function to aggregate game releases by month, also outside because it's a pure function.
+const aggregateDataByMonth = (games) => {
+  console.log(games); // Check the game data format
+
+  const monthlyCounts = Array.from({ length: 12 }, () => 0);
+
+  games.forEach(game => {
+    console.log(game.released); // Check the 'released' date format for each game
+    const releaseDate = new Date(game.released)
+    console.log(releaseDate); // Verify the parsed date
+
+    const month = releaseDate.getMonth();
+    console.log(month); // Log the month to ensure it's correct
+
+    monthlyCounts[month]++;
+  });
+
+  console.log(monthlyCounts); // Verify the counts for each month
+
+  return monthlyCounts.map((count, index) => ({
+    month: new Date(2000, index).toLocaleString('default', { month: 'short' }),
+    releases: count,
+  }));
+};
+
+const GameReleasesChart = () => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [gameReleases, setGameReleases] = useState([]);
+  const apiKey = process.env.REACT_APP_API_KEY; // Ensure this matches the .env variable
+
+  // Fetch game releases when 'selectedYear' changes.
+  useEffect(() => {
+    if (apiKey) {
+      fetchGamesByYear(selectedYear, apiKey).then(data => {
+        const monthlyData = aggregateDataByMonth(data);
+        setGameReleases(monthlyData);
+      });
+    }
+  }, [selectedYear, apiKey]);
+
+  // Dropdown options for years
+  const yearsOptions = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i);
+
+  // Event handler for changing the selected year
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Game Releases in {year}</h2>
-      <BarChart width={600} height={300} data={gameReleases}>
+    <div className="game-releases-chart">
+      <h2>Game Releases Chart</h2>
+      <label htmlFor="year-select">Choose a year:</label>
+      <select
+        id="year-select"
+        value={selectedYear}
+        onChange={handleYearChange}
+      >
+        {yearsOptions.map(year => (
+          <option key={year} value={year}>{year}</option>
+        ))}
+      </select>
+      <BarChart width={730} height={250} data={gameReleases}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
-        <YAxis/>
+        <YAxis allowDecimals={false} />
         <Tooltip />
         <Bar dataKey="releases" fill="#8884d8" />
       </BarChart>
