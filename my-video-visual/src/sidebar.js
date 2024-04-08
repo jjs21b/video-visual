@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Sidebar = () => {
+const Sidebar = ({ setGames }) => {
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
   const [developers, setDevelopers] = useState([]);
@@ -48,15 +48,20 @@ const Sidebar = () => {
   
   // Fetch games based on selected genre and developer
   const fetchGames = async () => {
-    let url = `https://api.rawg.io/api/games?key=${apiKey}`;
-    if (selectedGenre) url += `&genres=${selectedGenre}`;
-    if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
-    if (score > 0) url += `&metacritic=${score},100`;
-    if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log(data.results); // For now, just log the fetched games to the console
+    try {
+      let url = `https://api.rawg.io/api/games?key=${apiKey}`;
+      if (selectedGenre) url += `&genres=${selectedGenre}`;
+      if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
+      if (score > 0) url += `&metacritic=${score},100`;
+      if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data.results); // For now, just log the fetched games to the console
+      setGames(data.results);
+    } catch (error) {
+      console.error("Error fetching games:", error);
+    }
+    
   };
 
 

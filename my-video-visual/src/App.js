@@ -1,18 +1,18 @@
 import './App.css';
-import React, { useState , useEffect} from 'react';
-import ResultsDisplay from './ResultsDisplay'; // Make sure the path is correct
+// App.js
+import React, { useState } from 'react';
 import Sidebar from './sidebar';
-import fetchGames from './api'
-
+import GamesDisplay from './ResultsDisplay'; // Adjust the import path as necessary
 
 const App = () => {
+  const [games, setGames] = useState([]);
 
   return (
-    <div className="app">
-      <Sidebar/>
+    <div className="app flex">
+      <Sidebar setGames={setGames} />
+      <GamesDisplay games={games} />
     </div>
   );
 };
-
 
 export default App;
