@@ -6,17 +6,10 @@ import fetchGames from './api'
 
 
 const App = () => {
-  const [filters, setFilters] = useState({});
-  const [games, setGames] = useState([]);
-
-  useEffect(() => {
-    fetchGames(filters).then(setGames);
-  }, [filters]);
 
   return (
     <div className="app">
-      <Sidebar onFiltersChange={setFilters} />
-      <ResultsDisplay games={games} />
+      <Sidebar/>
     </div>
   );
 };
