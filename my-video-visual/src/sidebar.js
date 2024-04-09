@@ -9,7 +9,7 @@ const Sidebar = ({ setGames }) => {
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('')
   const [score, setScore] = useState(null);
-  const [numberResults, setNumberResults] = useState(null);
+  const [numberResults, setNumberResults] = useState(20);
   
   // Fetch genres
   const fetchGenres = async () => {
@@ -53,9 +53,9 @@ const Sidebar = ({ setGames }) => {
       let url = `https://api.rawg.io/api/games?key=${apiKey}`;
       if (selectedGenre) url += `&genres=${selectedGenre}`;
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
-      if (score > 0) url += `&metacritic=${score},100`;
+      if (score) url += `&metacritic=${score},100`;
       if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-      if (numberResults > 0) url += `&page_size=${numberResults}`;
+      if (numberResults != 20) url += `&page_size=${numberResults}`;
       const response = await fetch(url);
       const data = await response.json();
       console.log(data.results); // For now, just log the fetched games to the console

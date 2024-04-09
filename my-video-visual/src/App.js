@@ -9,17 +9,27 @@ const AppContent = () => {
   const showSidebar = !location.pathname.startsWith('/game/');
   const showHeader = location.pathname === '/'; // Show header only on the front page
   const [games, setGames] = useState([]);
+
   return (
     <div className="app flex min-h-screen bg-gray-800 text-white">
-      {showHeader && (
-        <header className="w-full py-8 text-center">
-          <h1 className="text-4xl font-bold">
-            Find the Game You're Looking For
-          </h1>
-        </header>
+      {/* Conditional Sidebar */}
+      {showSidebar && (
+        <div className="sidebar w-64"> {/* Adjust width as needed */}
+          <Sidebar setGames={setGames} />
+        </div>
       )}
-      {showSidebar && <Sidebar setGames={setGames} />}
+
+      {/* Main Content Area */}
       <div className="flex-grow">
+        {showHeader && (
+          <header className="w-full py-8 text-center">
+            <h1 className="text-4xl font-bold">
+              Find the Game You're Looking For
+            </h1>
+          </header>
+        )}
+
+        {/* Routes */}
         <Routes>
           <Route path="/" element={<GamesDisplay games={games} />} />
           <Route path="/game/:id" element={<GameDetails />} />
@@ -28,6 +38,7 @@ const AppContent = () => {
     </div>
   );
 };
+
 
 const App = () => {
 
