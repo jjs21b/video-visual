@@ -4,24 +4,32 @@ import Sidebar from './sidebar';
 import GamesDisplay from './ResultsDisplay';
 import GameDetails from './GameDetails';
 
-const App = () => {
+const AppContent = () => {
+  const location = useLocation(); // Hook to access the current location
+  const showSidebar = !location.pathname.startsWith('/game/');
+  const showHeader = location.pathname === '/'; // Show header only on the front page
   const [games, setGames] = useState([]);
-
-  const AppContent = () => {
-    const location = useLocation(); // Now it's used in a child component of Router
-
-    const showSidebar = !location.pathname.startsWith('/game/');
-
-    return (
-      <div className="app flex">
-        {showSidebar && <Sidebar setGames={setGames} />}
+  return (
+    <div className="app flex min-h-screen bg-gray-800 text-white">
+      {showHeader && (
+        <header className="w-full py-8 text-center">
+          <h1 className="text-4xl font-bold">
+            Find the Game You're Looking For
+          </h1>
+        </header>
+      )}
+      {showSidebar && <Sidebar setGames={setGames} />}
+      <div className="flex-grow">
         <Routes>
           <Route path="/" element={<GamesDisplay games={games} />} />
           <Route path="/game/:id" element={<GameDetails />} />
         </Routes>
       </div>
-    );
-  };
+    </div>
+  );
+};
+
+const App = () => {
 
   return (
     <Router basename='/video-visual'>

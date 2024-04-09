@@ -8,8 +8,8 @@ const Sidebar = ({ setGames }) => {
   const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('')
-  const [score, setScore] = useState(0);
-  const [numberResults, setNumberResults] = useState(0);
+  const [score, setScore] = useState(null);
+  const [numberResults, setNumberResults] = useState(null);
   
   // Fetch genres
   const fetchGenres = async () => {
