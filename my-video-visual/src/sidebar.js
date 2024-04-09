@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Sidebar = ({ setGames }) => {
+const Sidebar = ({ setGames, setSearchPerformed }) => {
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
   const [developers, setDevelopers] = useState([]);
@@ -8,7 +8,7 @@ const Sidebar = ({ setGames }) => {
   const [selectedGenre, setSelectedGenre] = useState('');
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('')
-  const [score, setScore] = useState(null);
+  const [score, setScore] = useState('');
   const [numberResults, setNumberResults] = useState(20);
   
   // Fetch genres
@@ -44,9 +44,7 @@ const Sidebar = ({ setGames }) => {
     setPlatforms(sortedPlatforms);
   };
   
-  
-  
-  
+
   // Fetch games based on selected genre and developer
   const fetchGames = async () => {
     try {
@@ -60,6 +58,9 @@ const Sidebar = ({ setGames }) => {
       const data = await response.json();
       console.log(data.results); // For now, just log the fetched games to the console
       setGames(data.results);
+      if (selectedGenre || selectedDeveloper || score || selectedPlatform || numberResults != 20){
+        setSearchPerformed(true)
+      } // Indicate that a search has been performed
     } catch (error) {
       console.error("Error fetching games:", error);
     }
@@ -72,11 +73,18 @@ const Sidebar = ({ setGames }) => {
     fetchGenres();
     fetchPlatforms();
     fetchDevelopers();
+    fetchGames();
   }, []);
   
 
   return (
     <div className="p-4 min-w-60 bg-gray-800 text-white h-page overflow-y-auto">
+      {/* Text above Sidebar */}
+      <div className="w-full py-4 text-center">
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Search Criteria:
+        </h2>
+    </div>
       {/* Genre Dropdown */}
       <div className="mb-4">
         <label htmlFor="genre-select" className="block text-sm font-bold mb-2">Genre:</label>
@@ -86,7 +94,7 @@ const Sidebar = ({ setGames }) => {
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
-          <option value="">Select a Genre</option>
+          <option value="">Any</option>
           {genres.map(genre => (
             <option key={genre.id} value={genre.id}>{genre.name}</option>
           ))}
@@ -101,7 +109,7 @@ const Sidebar = ({ setGames }) => {
           value={selectedPlatform}
           onChange={(e) => setSelectedPlatform(e.target.value)}
         >
-          <option value="">Select a Platform</option>
+          <option value="">Any</option>
           {platforms.map(platform => (
             <option key={platform.id} value={platform.id}>{platform.name}</option>
           ))}
@@ -116,7 +124,7 @@ const Sidebar = ({ setGames }) => {
           className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
           value={selectedDeveloper}
           onChange={(e) => setSelectedDeveloper(e.target.value)}>
-          <option value="">Select a Developer</option>
+          <option value="">Any</option>
           {developers.map(developer => (
             <option key={developer.id} value={developer.id}>{developer.name}</option>
           ))}
