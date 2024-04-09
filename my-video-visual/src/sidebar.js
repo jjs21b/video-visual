@@ -74,7 +74,7 @@ const Sidebar = ({ setGames }) => {
   
 
   return (
-    <div className="p-4 w-64 bg-gray-800 text-white h-screen overflow-y-auto">
+    <div className="p-4 w-64 bg-gray-800 text-white h-page overflow-y-auto">
       {/* Genre Dropdown */}
       <div className="mb-4">
         <label htmlFor="genre-select" className="block text-sm font-bold mb-2">Genre:</label>
