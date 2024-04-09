@@ -9,6 +9,7 @@ const Sidebar = ({ setGames }) => {
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('')
   const [score, setScore] = useState(0);
+  const [numberResults, setNumberResults] = useState(0);
   
   // Fetch genres
   const fetchGenres = async () => {
@@ -54,6 +55,7 @@ const Sidebar = ({ setGames }) => {
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score > 0) url += `&metacritic=${score},100`;
       if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
+      if (numberResults > 0) url += `&page_size=${numberResults}`;
       const response = await fetch(url);
       const data = await response.json();
       console.log(data.results); // For now, just log the fetched games to the console
@@ -74,7 +76,7 @@ const Sidebar = ({ setGames }) => {
   
 
   return (
-    <div className="p-4 w-64 bg-gray-800 text-white h-screen overflow-y-auto">
+    <div className="p-4 min-w-60 bg-gray-800 text-white h-page overflow-y-auto">
       {/* Genre Dropdown */}
       <div className="mb-4">
         <label htmlFor="genre-select" className="block text-sm font-bold mb-2">Genre:</label>
@@ -134,7 +136,19 @@ const Sidebar = ({ setGames }) => {
           onChange={(e) => setScore(e.target.value)}
         />
       </div>
-
+      {/* Number of results dropdown */}
+      <div className="mb-4">
+        <label htmlFor="result-number" className="block text-sm font-bold mb-2">Display Results (1-40):</label>
+        <input
+          id="result-number"
+          type="number"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          min="1"
+          max="40"
+          value={numberResults}
+          onChange={(e) => setNumberResults(e.target.value)}
+        />
+      </div>
       {/* Search Button */}
       <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>Search Games</button>
     </div>
