@@ -6,6 +6,14 @@ const GameDetails = () => {
   const navigate = useNavigate();
   const [gameDetails, setGameDetails] = useState(null);
   const apiKey = process.env.REACT_APP_API_KEY;
+  const processDescription = (description) => {
+    // Assuming "Descripción en español:" marks the beginning of the Spanish portion
+    const delimiter = "Español";
+    const parts = description.split(delimiter);
+  
+    // Return the part before the delimiter if it exists, otherwise return the full description
+    return parts.length > 1 ? parts[0].trim() : description;
+  };
 
   useEffect(() => {
     const fetchGameDetails = async () => {
@@ -13,8 +21,9 @@ const GameDetails = () => {
       const data = await response.json();
       setGameDetails(data);
     };
-
     fetchGameDetails();
+    
+    
   }, [id]);
 
   if (!gameDetails) return <div>Loading...</div>;
@@ -39,7 +48,7 @@ const GameDetails = () => {
     )}
     
     {/* Game Description */}
-    <div className="mb-4" dangerouslySetInnerHTML={{ __html: gameDetails.description }} />
+    <div className="mb-4" dangerouslySetInnerHTML={{ __html: processDescription(gameDetails.description) }} />
     
     {/* Metacritic Score */}
     {gameDetails.metacritic && (
