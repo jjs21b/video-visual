@@ -11,6 +11,7 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
   const [score, setScore] = useState('');
   const [numberResults, setNumberResults] = useState(20);
   
+
   // Fetch genres
   const fetchGenres = async () => {
     const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
@@ -60,20 +61,19 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
       setGames(data.results);
       if (selectedGenre || selectedDeveloper || score || selectedPlatform || numberResults != 20){
         setSearchPerformed(true)
-      } // Indicate that a search has been performed
+      }
     } catch (error) {
       console.error("Error fetching games:", error);
     }
     
   };
 
-
   // Call fetch functions when the component mounts
   useEffect(() => {
     fetchGenres();
     fetchPlatforms();
     fetchDevelopers();
-    fetchGames();
+    
   }, []);
   
 

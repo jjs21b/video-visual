@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Sidebar from './sidebar';
 import GamesDisplay from './ResultsDisplay';
@@ -49,7 +49,7 @@ const AppContent = () => {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<GamesDisplay games={games} />} />
-          <Route path="/game/:id" element={<GameDetails />} />
+          <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed}/>} />
         </Routes>
       </div>
     </div>
