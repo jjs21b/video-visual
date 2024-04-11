@@ -31,7 +31,7 @@ const GameDetails = ({setSearchPerformed}) => {
     
   }, [id]);
 
-  if (!gameDetails) return <div>Loading...</div>;
+  if (!gameDetails) return <div className = "text-4xl font-bold">Loading...</div>;
 
   return (
     <div className="game-details p-4 bg-gray-900 text-white">
@@ -73,7 +73,7 @@ const GameDetails = ({setSearchPerformed}) => {
       <div className="my-8 mx-4 md:flex md:justify-between border border-gray-700 rounded p-4">
         {/* Left Side Content */}
         <div className="md:w-1/2 md:pr-4">
-          <h2 className="text-xl font-bold mb-4">More Information</h2>
+          <h2 className="text-xl font-bold mb-4">More Information:</h2>
           {/* ESRB Rating */}
           {gameDetails.esrb_rating && (
             <div className="mb-4">

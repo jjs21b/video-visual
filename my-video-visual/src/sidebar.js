@@ -10,7 +10,7 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('')
   const [score, setScore] = useState('');
-  const [numberResults, setNumberResults] = useState(20);
+  //const [numberResults, setNumberResults] = useState(20);
   const location = useLocation();
   const showSearch = !location.pathname.startsWith('/game/');
 
@@ -74,14 +74,11 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
 
   // Call fetch functions when the component mounts
   useEffect(() => {
-    console.log('Sidebar is mounting');
+    //console.log('Sidebar is mounting');
     fetchGenres();
     fetchPlatforms();
     fetchDevelopers();
   
-    return () => {
-      console.log('Sidebar is unmounting');
-    };
   }, []);
   
 
