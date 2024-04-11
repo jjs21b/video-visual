@@ -82,7 +82,7 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
       {/* Text above Sidebar */}
       <div className="w-full py-4 text-center">
         <h2 className="text-2xl font-semibold tracking-tight">
-          Search Criteria:
+          Search Criteria
         </h2>
     </div>
       {/* Genre Dropdown */}
