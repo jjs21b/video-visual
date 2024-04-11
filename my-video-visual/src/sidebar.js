@@ -18,35 +18,49 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
 
   // Fetch genres
   const fetchGenres = async () => {
-    const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
-    const data = await response.json();
-    const sortedGenres = data.results.sort((a, b) => a.name.localeCompare(b.name));
-    setGenres(sortedGenres);
+    try{
+      const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
+      const data = await response.json();
+      const sortedGenres = data.results.sort((a, b) => a.name.localeCompare(b.name));
+      setGenres(sortedGenres);
+    }
+    catch(error) {
+      console.error("Error fetching games:", error);
+    }
   };
   
   // Fetch developers
   const fetchDevelopers = async () => {
-    const response = await fetch(`https://api.rawg.io/api/developers?key=${apiKey}`);
-    const data = await response.json();
-    const sortedDevelopers = data.results.sort((a, b) => a.name.localeCompare(b.name));
-    setDevelopers(sortedDevelopers);
+    try{
+      const response = await fetch(`https://api.rawg.io/api/developers?key=${apiKey}`);
+      const data = await response.json();
+      const sortedDevelopers = data.results.sort((a, b) => a.name.localeCompare(b.name));
+      setDevelopers(sortedDevelopers);
+    }   
+    catch(error) {
+      console.error("Error fetching games:", error);
+    }
   };
   
   // fetch parent platforms
   const fetchPlatforms = async () => {
-    const response = await fetch(`https://api.rawg.io/api/platforms?key=${apiKey}`);
-    const data = await response.json();
-    // Using a comparison function for reverse alphabetical sorting
-    const sortedPlatforms = data.results.sort((a, b) => {
-      if (a.name < b.name) {
-        return 1; // For reverse alphabetical order, return 1 when a is less than b
-      }
-      if (a.name > b.name) {
-        return -1; // Return -1 when a is greater than b
-      }
-      return 0; // Return 0 if they're equal
-    });
-    setPlatforms(sortedPlatforms);
+    try {
+      const response = await fetch(`https://api.rawg.io/api/platforms?key=${apiKey}`);
+      const data = await response.json();
+      // Using a comparison function for reverse alphabetical sorting
+      const sortedPlatforms = data.results.sort((a, b) => {
+        if (a.name < b.name) {
+          return 1; // For reverse alphabetical order, return 1 when a is less than b
+        }
+        if (a.name > b.name) {
+          return -1; // Return -1 when a is greater than b
+        }
+        return 0; // Return 0 if they're equal
+      });
+      setPlatforms(sortedPlatforms);
+    }catch(error) {
+      console.error("Error fetching games:", error);
+    }
   };
   
 
@@ -61,7 +75,7 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
       //if (numberResults != 20) url += `&page_size=${numberResults}`;
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data.results); // For now, just log the fetched games to the console
+      // console.log(data.results); // For now, just log the fetched games to the console
       setGames(data.results);
       if (selectedGenre || selectedDeveloper || score || selectedPlatform ){
         setSearchPerformed(true)

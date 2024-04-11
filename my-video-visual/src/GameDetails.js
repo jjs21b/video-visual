@@ -22,9 +22,13 @@ const GameDetails = ({setSearchPerformed}) => {
 
   useEffect(() => {
     const fetchGameDetails = async () => {
-      const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
-      const data = await response.json();
-      setGameDetails(data);
+      try{
+        const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
+        const data = await response.json();
+        setGameDetails(data);
+      } catch (error) {
+        console.error("Error fetching games:", error);
+      }
     };
     fetchGameDetails();
     

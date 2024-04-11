@@ -53,8 +53,8 @@ const AppContent = () => {
           </header>
         )}
          {!searchPerformed && showHeader && (
-          <header className="w-full py-8 text-center">
-            <h1 className="text-4xl font-bold">
+          <header className="w-full py-5 text-center">
+            <h1 className="text-3xl font-bold">
               Find The Game That's Right For You!
             </h1>
           </header>
