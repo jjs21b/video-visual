@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,  } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Sidebar = ({ setGames, setSearchPerformed }) => {
   const apiKey = process.env.REACT_APP_API_KEY;
@@ -10,6 +11,9 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
   const [selectedPlatform, setSelectedPlatform] = useState('')
   const [score, setScore] = useState('');
   const [numberResults, setNumberResults] = useState(20);
+  const location = useLocation();
+  const showSearch = !location.pathname.startsWith('/game/');
+
   
 
   // Fetch genres
@@ -70,15 +74,19 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
 
   // Call fetch functions when the component mounts
   useEffect(() => {
+    console.log('Sidebar is mounting');
     fetchGenres();
     fetchPlatforms();
     fetchDevelopers();
-    
+  
+    return () => {
+      console.log('Sidebar is unmounting');
+    };
   }, []);
   
 
   return (
-    <div className="p-4 min-w-60 bg-gray-800 text-white h-page overflow-y-auto">
+    <div className="p-4 min-w-64 bg-gray-800 text-white h-page overflow-y-auto">
       {/* Text above Sidebar */}
       <div className="w-full py-4 text-center">
         <h2 className="text-2xl font-semibold tracking-tight">
@@ -158,8 +166,12 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
         />
       </div>
       {/* Search Button */}
-      <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>Search Games</button>
-    </div>
+      {showSearch &&( 
+      <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
+        Search Games</button>
+        )}
+      </div>
+    
 
   );
 };
