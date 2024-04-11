@@ -28,7 +28,6 @@ const AppContent = () => {
 
   return (
     <div className="app flex min-h-screen bg-gray-800 text-white">
-      {/* Conditional Sidebar */}
       {(
         <div className="sidebar w-64"> {/* Adjust width as needed */}
           <Sidebar setGames={setGames} setSearchPerformed={setSearchPerformed} />
@@ -39,22 +38,22 @@ const AppContent = () => {
        <div className="flex-grow">
         {/* Conditionally render "Search Results" text only if search has been performed and there are results */}
         {searchPerformed && showHeader && hasResults && (
-          <header className="w-full py-5 text-center">
+          <header className="banner text-center py-5 bg-blue-900 shadow-xl mx-8">
             <h1 className="text-3xl font-bold" >
-              Search Results 
+              Results 
             </h1>
           </header>
         )}
         {searchPerformed && showHeader && !hasResults && (
           <header className="w-full py-8 text-center">
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-2xl font-bold">
               No Results Found
             </h1>
           </header>
         )}
          {!searchPerformed && showHeader && (
-          <header className="w-full py-5 text-center">
-            <h1 className="text-3xl font-bold">
+          <header className="banner text-center py-4 bg-blue-900 shadow-xl mx-8">
+            <h1 className="text-4xl font-bold">
               Find The Game That's Right For You!
             </h1>
           </header>
