@@ -11,7 +11,21 @@ const AppContent = () => {
   const [games, setGames] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const hasResults = games.length > 0; // Check if there are any games in the state
+  const apiKey = process.env.REACT_APP_API_KEY;
 
+  const fetchInitialGames = async () => {
+    let url = `https://api.rawg.io/api/games?key=${apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    setGames(data.results);
+    
+  };
+  useEffect(() => {
+    if (searchPerformed == false){
+      fetchInitialGames();
+    }
+    
+  }, []); // Empty dependency array to run only on component mount
 
   return (
     <div className="app flex min-h-screen bg-gray-800 text-white">
