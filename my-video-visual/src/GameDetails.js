@@ -31,8 +31,6 @@ const GameDetails = ({setSearchPerformed}) => {
       }
     };
     fetchGameDetails();
-    
-    
   }, [id]);
 
   if (!gameDetails) return <div className = "text-4xl font-bold">Loading...</div>;
@@ -41,22 +39,24 @@ const GameDetails = ({setSearchPerformed}) => {
     <div className="game-details p-4 bg-gray-900 text-white">
       <button 
       onClick={handleBackClick}
-      className="back-btn mb-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+      className="back-btn mb-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4
+       rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
       >
-      <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+      <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" 
+      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
       Back
     </button>
     {/* Game Name */}
     <h1 className="text-4xl text-center font-bold my-4 mt-[-2rem]">{gameDetails.name}</h1>
       {/* Game Images */}
       <div className={`flex ${gameDetails.background_image_additional ? 'justify-start gap-4' : 'justify-center'}`}>
-        {gameDetails.background_image && (
-          <img src={gameDetails.background_image} alt="Main" className="w-full md:w-1/2 rounded-lg shadow-lg" />
-        )}
-        {gameDetails.background_image_additional && (
-          <img src={gameDetails.background_image_additional} alt="Additional" className="pr-4 hidden md:block w-1/2 rounded-lg shadow-lg" />
-        )}
-      </div>
+      {gameDetails.background_image && (
+        <img src={gameDetails.background_image} alt="Main" className="w-full md:w-1/2 rounded-lg shadow-lg object-cover" /> // Added object-cover
+      )}
+      {gameDetails.background_image_additional && (
+        <img src={gameDetails.background_image_additional} alt="Additional" className="w-full md:w-1/2 rounded-lg shadow-lg object-cover" /> // Added w-full md:w-1/2 and object-cover
+      )}
+    </div>
       {/* Description */}
       <div className="my-8 mx-4 p-4 border border-gray-700 rounded">
         <h2 className="text-2xl font-bold mb-4">Description:</h2>
