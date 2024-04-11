@@ -13,7 +13,7 @@ const AppContent = () => {
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const fetchInitialGames = async () => {
-    let url = `https://api.rawg.io/api/games?key=${apiKey}`;
+    let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
     const response = await fetch(url);
     const data = await response.json();
     setGames(data.results);
@@ -39,8 +39,8 @@ const AppContent = () => {
        <div className="flex-grow">
         {/* Conditionally render "Search Results" text only if search has been performed and there are results */}
         {searchPerformed && showHeader && hasResults && (
-          <header className="w-full py-8 text-center">
-            <h1 className="text-4xl font-bold" >
+          <header className="w-full py-5 text-center">
+            <h1 className="text-3xl font-bold" >
               Search Results 
             </h1>
           </header>

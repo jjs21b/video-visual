@@ -43,7 +43,7 @@ const GameDetails = ({setSearchPerformed}) => {
       Back
     </button>
     {/* Game Name */}
-    <h1 className="text-4xl text-center font-bold my-4">{gameDetails.name}</h1>
+    <h1 className="text-4xl text-center font-bold my-4 mt-[-2rem]">{gameDetails.name}</h1>
       {/* Game Images */}
       <div className={`flex ${gameDetails.background_image_additional ? 'justify-start gap-4' : 'justify-center'}`}>
         {gameDetails.background_image && (

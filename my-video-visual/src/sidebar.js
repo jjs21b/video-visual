@@ -53,17 +53,17 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
   // Fetch games based on selected genre and developer
   const fetchGames = async () => {
     try {
-      let url = `https://api.rawg.io/api/games?key=${apiKey}`;
+      let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
       if (selectedGenre) url += `&genres=${selectedGenre}`;
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score) url += `&metacritic=${score},100`;
       if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-      if (numberResults != 20) url += `&page_size=${numberResults}`;
+      //if (numberResults != 20) url += `&page_size=${numberResults}`;
       const response = await fetch(url);
       const data = await response.json();
       console.log(data.results); // For now, just log the fetched games to the console
       setGames(data.results);
-      if (selectedGenre || selectedDeveloper || score || selectedPlatform || numberResults != 20){
+      if (selectedGenre || selectedDeveloper || score || selectedPlatform ){
         setSearchPerformed(true)
       }
     } catch (error) {
@@ -152,7 +152,8 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
           onChange={(e) => setScore(e.target.value)}
         />
       </div>
-      {/* Number of results dropdown */}
+        
+      {/* Number of results dropdown 
       <div className="mb-4">
         <label htmlFor="result-number" className="block text-sm font-bold mb-2">Display Results (1-40):</label>
         <input
@@ -165,6 +166,7 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
           onChange={(e) => setNumberResults(e.target.value)}
         />
       </div>
+    */}
       {/* Search Button */}
       {showSearch &&( 
       <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
