@@ -2,7 +2,7 @@
   "name": "my-video-visual",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jjs21b.github.io/video-visual/",
+  "homepage": "http://localhost:3000/video-visual",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

@@ -10,6 +10,10 @@ const AppContent = () => {
   const [games, setGames] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const hasResults = games.length > 0; // Check if there are any games in the state
+  const [selectedGenre, setSelectedGenre] = useState('');
+  const [selectedDeveloper, setSelectedDeveloper] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState('')
+  const [score, setScore] = useState('');
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const fetchInitialGames = async () => {
@@ -17,6 +21,28 @@ const AppContent = () => {
     const response = await fetch(url);
     const data = await response.json();
     setGames(data.results);
+    
+  };
+  // Fetch games based on selected genre and developer
+  const fetchGames = async () => {
+    try {
+      let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
+      if (selectedGenre) url += `&genres=${selectedGenre}`;
+      if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
+      if (score) url += `&metacritic=${score},100`;
+      if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
+      //if (numberResults != 20) url += `&page_size=${numberResults}`;
+      const response = await fetch(url);
+      const data = await response.json()
+      // console.log(data.results); // For now, just log the fetched games to the console
+      setGames(data.results);
+      if (selectedGenre || selectedDeveloper || score || selectedPlatform ){
+        setSearchPerformed(true)
+        console.log('games fetched');
+      }
+    } catch (error) {
+      console.error("Error fetching games:", error);
+    }
     
   };
   useEffect(() => {
@@ -30,7 +56,9 @@ const AppContent = () => {
     <div className="app flex min-h-screen bg-gray-800 text-white">
       {(
         <div className="sidebar w-64"> {/* Adjust width as needed */}
-          <Sidebar setGames={setGames} setSearchPerformed={setSearchPerformed} />
+          <Sidebar setGames={setGames} setSearchPerformed={setSearchPerformed} setScore = {setScore} score = {score} setSelectedGenre
+          = {setSelectedGenre} selectedGenre = {selectedGenre} setSelectedDeveloper = {setSelectedDeveloper} selectedDeveloper = 
+          {selectedDeveloper} setSelectedPlatform = {setSelectedPlatform} selectedPlatform = {selectedPlatform} fetchGames = {fetchGames}/>
         </div>
       )}
 

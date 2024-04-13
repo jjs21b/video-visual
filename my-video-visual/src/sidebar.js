@@ -1,15 +1,12 @@
 import React, { useState, useEffect,  } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const Sidebar = ({ setGames, setSearchPerformed }) => {
+const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGenre, selectedGenre, setSelectedDeveloper, selectedDeveloper
+,setSelectedPlatform, selectedPlatform, fetchGames}) => {
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
   const [developers, setDevelopers] = useState([]);
   const [platforms, setPlatforms] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState('');
-  const [selectedDeveloper, setSelectedDeveloper] = useState('');
-  const [selectedPlatform, setSelectedPlatform] = useState('')
-  const [score, setScore] = useState('');
   //const [numberResults, setNumberResults] = useState(20);
   const location = useLocation();
   const showSearch = !location.pathname.startsWith('/game/');
@@ -63,28 +60,6 @@ const Sidebar = ({ setGames, setSearchPerformed }) => {
     }
   };
   
-
-  // Fetch games based on selected genre and developer
-  const fetchGames = async () => {
-    try {
-      let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
-      if (selectedGenre) url += `&genres=${selectedGenre}`;
-      if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
-      if (score) url += `&metacritic=${score},100`;
-      if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-      //if (numberResults != 20) url += `&page_size=${numberResults}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      // console.log(data.results); // For now, just log the fetched games to the console
-      setGames(data.results);
-      if (selectedGenre || selectedDeveloper || score || selectedPlatform ){
-        setSearchPerformed(true)
-      }
-    } catch (error) {
-      console.error("Error fetching games:", error);
-    }
-    
-  };
 
   // Call fetch functions when the component mounts
   useEffect(() => {
