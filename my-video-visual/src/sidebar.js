@@ -185,9 +185,11 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
         <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Perform New Search</button>
       )}
+      {showSearch && searchPerformed && (
       <button onClick={resetSearchOptions} className="w-full mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
         Reset Search Criteria
       </button>
+      )}
       </div>
     
 
