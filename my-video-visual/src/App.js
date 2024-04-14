@@ -18,6 +18,7 @@ const AppContent = () => {
   const [title, setTitle]=useState('');
   const [moreGames, setMoreGames] = useState(false)
   const [query, setQuery] = useState('')
+  const [loading, setLoading ] = useState(false);
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const fetchInitialGames = async () => {
@@ -31,6 +32,7 @@ const AppContent = () => {
   };
   // Fetch games based on selected genre and developer
   const fetchGames = async () => {
+    setLoading(true);
     try {
       let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
       if (selectedGenre) url += `&genres=${selectedGenre}`;
@@ -42,27 +44,32 @@ const AppContent = () => {
       const data = await response.json();
       setGames(data.results);
       setSearchPerformed(true);
+      setLoading(false);  // Stop loading after data is fetched
       setQuery(url);
       setPage(1);
-      console.log(data.next)
+      // console.log(data.next)
       setMoreGames(data.next !== null);
     } catch (error) {
       console.error("Error fetching games:", error);
+      setLoading(false);
     }
   };
   const loadMoreGames = async () => {
+    setLoading(true);
     try {
       let nextPage = page + 1;
       let url = `${query}&page=${nextPage}`;
       const response = await fetch(url);
       const data = await response.json();
       setGames(prevGames => [...prevGames, ...data.results]);
+      setLoading(false);
       setPage(nextPage);
       console.log(data.results.length)
       //console.log(data.next);
       setMoreGames(data.next !== null);
   
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching more games:", error);
     }
   };
@@ -112,7 +119,8 @@ const AppContent = () => {
         )}
         {/* Routes */}
         <Routes>
-          <Route path="/" element={<GamesDisplay games={games} loadMoreGames = {loadMoreGames} moreGames = {moreGames}/>} />
+          <Route path="/" element={<GamesDisplay games={games} loadMoreGames = {loadMoreGames} moreGames = {moreGames}
+          loading = {loading}/>} />
           <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed}/>} />
         </Routes>
       </div>
