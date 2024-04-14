@@ -25,7 +25,6 @@ const AppContent = () => {
     const data = await response.json();
     setGames(data.results);
     setMoreGames(true);
-    setPage(2);
     setQuery(url);
     
   };
@@ -37,12 +36,12 @@ const AppContent = () => {
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score) url += `&metacritic=${score},100`;
       if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-  
       const response = await fetch(url);
       const data = await response.json();
       setGames(data.results);
       setSearchPerformed(true);
       setQuery(url);
+      setPage(1);
       setMoreGames(data.results.length === 40); // Check directly from fetch
     } catch (error) {
       console.error("Error fetching games:", error);
@@ -54,9 +53,10 @@ const AppContent = () => {
       let url = `${query}&page=${nextPage}`;
       const response = await fetch(url);
       const data = await response.json();
-      if (data.results.length > 0) {
+      if (data.results.length >= 1) {
         setGames(prevGames => [...prevGames, ...data.results]);
         setPage(nextPage);
+        console.log(data.results.length)
         setMoreGames(data.results.length === 40);
       } else {
         setMoreGames(false);
