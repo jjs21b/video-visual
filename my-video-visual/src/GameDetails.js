@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Spinner } from './ResultsDisplay';
 
 const GameDetails = ({setSearchPerformed}) => {
   const handleBackClick = () => {
@@ -33,7 +34,7 @@ const GameDetails = ({setSearchPerformed}) => {
     fetchGameDetails();
   }, [id]);
 
-  if (!gameDetails) return <div className = "text-4xl font-bold">Loading...</div>;
+  if (!gameDetails) return <div className = "text-4xl font-bold"><Spinner /></div>;
 
   return (
     <div className="game-details p-4 bg-gray-900 text-white">
