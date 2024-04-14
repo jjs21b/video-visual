@@ -2,7 +2,7 @@ import React, { useState, useEffect,  } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGenre, selectedGenre, setSelectedDeveloper, selectedDeveloper
-,setSelectedPlatform, selectedPlatform, fetchGames}) => {
+,setSelectedPlatform, selectedPlatform, fetchGames, searchPerformed}) => {
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
   const [developers, setDevelopers] = useState([]);
@@ -154,10 +154,15 @@ const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGe
       </div>
     */}
       {/* Search Button */}
-      {showSearch &&( 
+      {showSearch && !searchPerformed && (
       <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Search Games</button>
-        )}
+      )}
+      {showSearch && searchPerformed &&
+      (
+        <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
+        Perform New Search</button>
+      )}
       </div>
     
 

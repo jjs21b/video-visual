@@ -2,7 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
-const GamesDisplay = ({ games }) => {
+const GamesDisplay = ({ games, loadMoreGames, moreGames }) => {
+
   return (
     <div className="games-container bg-gray-800 p-8 min-h-screen">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
@@ -30,6 +31,16 @@ const GamesDisplay = ({ games }) => {
           </div>
         ))}
       </div>
+      {moreGames && (
+        <div className="text-center mt-6">
+          <button
+            onClick={loadMoreGames}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+          >
+            Load More Games
+          </button>
+        </div>
+      )}
     </div>
   );
   

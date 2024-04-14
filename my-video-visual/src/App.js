@@ -14,6 +14,9 @@ const AppContent = () => {
   const [selectedDeveloper, setSelectedDeveloper] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('')
   const [score, setScore] = useState('');
+  const [page, setPage] = useState(1)
+  const [moreGames, setMoreGames] = useState(false)
+  const [query, setQuery] = useState('')
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const fetchInitialGames = async () => {
@@ -21,6 +24,9 @@ const AppContent = () => {
     const response = await fetch(url);
     const data = await response.json();
     setGames(data.results);
+    setMoreGames(true);
+    setPage(2);
+    setQuery(url);
     
   };
   // Fetch games based on selected genre and developer
@@ -31,20 +37,36 @@ const AppContent = () => {
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score) url += `&metacritic=${score},100`;
       if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-      //if (numberResults != 20) url += `&page_size=${numberResults}`;
+  
       const response = await fetch(url);
-      const data = await response.json()
-      // console.log(data.results); // For now, just log the fetched games to the console
+      const data = await response.json();
       setGames(data.results);
-      if (selectedGenre || selectedDeveloper || score || selectedPlatform ){
-        setSearchPerformed(true)
-        console.log('games fetched');
-      }
+      setSearchPerformed(true);
+      setQuery(url);
+      setMoreGames(data.results.length === 40); // Check directly from fetch
     } catch (error) {
       console.error("Error fetching games:", error);
     }
-    
   };
+  const loadMoreGames = async () => {
+    try {
+      let nextPage = page + 1;
+      let url = `${query}&page=${nextPage}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.results.length > 0) {
+        setGames(prevGames => [...prevGames, ...data.results]);
+        setPage(nextPage);
+        setMoreGames(data.results.length === 40);
+      } else {
+        setMoreGames(false);
+      }
+    } catch (error) {
+      console.error("Error fetching more games:", error);
+    }
+  };
+
+
   useEffect(() => {
     if (searchPerformed == false){
       fetchInitialGames();
@@ -58,7 +80,8 @@ const AppContent = () => {
         <div className="sidebar w-64"> {/* Adjust width as needed */}
           <Sidebar setGames={setGames} setSearchPerformed={setSearchPerformed} setScore = {setScore} score = {score} setSelectedGenre
           = {setSelectedGenre} selectedGenre = {selectedGenre} setSelectedDeveloper = {setSelectedDeveloper} selectedDeveloper = 
-          {selectedDeveloper} setSelectedPlatform = {setSelectedPlatform} selectedPlatform = {selectedPlatform} fetchGames = {fetchGames}/>
+          {selectedDeveloper} setSelectedPlatform = {setSelectedPlatform} selectedPlatform = {selectedPlatform}
+           fetchGames = {fetchGames} searchPerformed = {searchPerformed}/>
         </div>
       )}
 
@@ -88,13 +111,13 @@ const AppContent = () => {
         )}
         {/* Routes */}
         <Routes>
-          <Route path="/" element={<GamesDisplay games={games} />} />
+          <Route path="/" element={<GamesDisplay games={games} loadMoreGames = {loadMoreGames} moreGames = {moreGames}/>} />
           <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed}/>} />
         </Routes>
       </div>
     </div>
   );
-};
+}
 
 
 const App = () => {
