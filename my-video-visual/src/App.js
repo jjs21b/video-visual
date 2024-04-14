@@ -15,6 +15,7 @@ const AppContent = () => {
   const [selectedPlatform, setSelectedPlatform] = useState('')
   const [score, setScore] = useState('');
   const [page, setPage] = useState(1)
+  const [title, setTitle]=useState('');
   const [moreGames, setMoreGames] = useState(false)
   const [query, setQuery] = useState('')
   const apiKey = process.env.REACT_APP_API_KEY;
@@ -36,6 +37,7 @@ const AppContent = () => {
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score) url += `&metacritic=${score},100`;
       if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
+      if (title) url += `&search=${title}`;
       const response = await fetch(url);
       const data = await response.json();
       setGames(data.results);
@@ -77,10 +79,10 @@ const AppContent = () => {
     <div className="app flex min-h-screen bg-gray-800 text-white">
       {(
         <div className="sidebar w-64"> {/* Adjust width as needed */}
-          <Sidebar setGames={setGames} setSearchPerformed={setSearchPerformed} setScore = {setScore} score = {score} setSelectedGenre
-          = {setSelectedGenre} selectedGenre = {selectedGenre} setSelectedDeveloper = {setSelectedDeveloper} selectedDeveloper = 
-          {selectedDeveloper} setSelectedPlatform = {setSelectedPlatform} selectedPlatform = {selectedPlatform}
-           fetchGames = {fetchGames} searchPerformed = {searchPerformed}/>
+          <Sidebar  setScore = {setScore} score = {score} setSelectedGenre = {setSelectedGenre} selectedGenre = {selectedGenre} 
+          setSelectedDeveloper = {setSelectedDeveloper} selectedDeveloper = {selectedDeveloper} setSelectedPlatform = 
+          {setSelectedPlatform} selectedPlatform = {selectedPlatform} fetchGames = {fetchGames} searchPerformed = {searchPerformed}
+           setTitle = {setTitle} title = {title}/>
         </div>
       )}
 

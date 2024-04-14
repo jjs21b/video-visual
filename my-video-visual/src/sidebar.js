@@ -1,8 +1,8 @@
 import React, { useState, useEffect,  } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGenre, selectedGenre, setSelectedDeveloper, selectedDeveloper
-,setSelectedPlatform, selectedPlatform, fetchGames, searchPerformed}) => {
+const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelectedDeveloper, selectedDeveloper
+,setSelectedPlatform, selectedPlatform, fetchGames, searchPerformed, setTitle, title}) => {
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
   const [developers, setDevelopers] = useState([]);
@@ -79,6 +79,17 @@ const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGe
           Search Criteria
         </h2>
     </div>
+      {/* Title Input */}
+      <div className="mb-4">
+        <label htmlFor="title" className="block text-sm font-bold mb-2">Title:</label>
+        <input
+          id="title"
+          type="text"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
       {/* Genre Dropdown */}
       <div className="mb-4">
         <label htmlFor="genre-select" className="block text-sm font-bold mb-2">Genre:</label>
@@ -109,7 +120,20 @@ const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGe
           ))}
         </select>
       </div>
-
+      {/* Metacritic Score Input */}
+      <div className="mb-4">
+        <label htmlFor="metacritic-score" className="block text-sm font-bold mb-2">Metacritic Score (1-100):</label>
+        <input
+          id="metacritic-score"
+          type="number"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          min="1"
+          max="100"
+          value={score}
+          onChange={(e) => setScore(e.target.value)}
+        />
+      </div>
+      
       {/* Developer Dropdown */}
       <div className="mb-4">
         <label htmlFor="developer-select" className="block text-sm font-bold mb-2">Developer:</label>
@@ -125,19 +149,7 @@ const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGe
         </select>
       </div>
 
-      {/* Metacritic Score Input */}
-      <div className="mb-4">
-        <label htmlFor="metacritic-score" className="block text-sm font-bold mb-2">Metacritic Score (1-100):</label>
-        <input
-          id="metacritic-score"
-          type="number"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
-          min="1"
-          max="100"
-          value={score}
-          onChange={(e) => setScore(e.target.value)}
-        />
-      </div>
+    
         
       {/* Number of results dropdown 
       <div className="mb-4">
