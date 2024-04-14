@@ -72,7 +72,7 @@ const Sidebar = ({ setGames, setSearchPerformed , setScore, score, setSelectedGe
   
 
   return (
-    <div className="p-4 min-w-64 bg-gray-800 text-white h-page overflow-y-auto">
+    <div className="p-4 min-w-64 bg-gray-800 text-white h-screen overflow-y-auto">
       {/* Text above Sidebar */}
       <div className="w-full py-4 text-center">
         <h2 className="text-2xl font-semibold tracking-tight">

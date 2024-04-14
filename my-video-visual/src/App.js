@@ -56,7 +56,7 @@ const AppContent = () => {
       const data = await response.json();
       setGames(prevGames => [...prevGames, ...data.results]);
       setPage(nextPage);
-      //console.log(data.results.length)
+      console.log(data.results.length)
       //console.log(data.next);
       setMoreGames(data.next !== null);
   
@@ -124,6 +124,7 @@ const App = () => {
   return (
     <Router basename='/video-visual'>
       <AppContent />
+      
     </Router>
   );
 };
