@@ -53,7 +53,7 @@ const ScrollTopButton = () => {
   };
 
   return (
-    <button onClick={scrollToTop} className="absolute bottom-3 left-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out flex items-center justify-center mb-5 ml-5">
+    <button onClick={scrollToTop} className="fixed bottom-1 left-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out flex items-center justify-center mb-5 ml-5">
       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
       </svg>

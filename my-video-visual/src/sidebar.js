@@ -82,7 +82,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
   
 
   return (
-    <div className="p-4 min-w-64 bg-gray-800 text-white h-screen overflow-y-auto">
+    <div className="p-3 min-w-64 bg-gray-800 text-white h-screen overflow-y-auto">
       {/* Text above Sidebar */}
       <div className="w-full py-4 text-center">
         <h2 className="text-2xl font-semibold tracking-tight">
@@ -90,22 +90,22 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
         </h2>
     </div>
       {/* Title Input */}
-      <div className="mb-4">
+      <div className="mb-1">
         <label htmlFor="title" className="block text-sm font-bold mb-2">Title:</label>
         <input
           id="title"
           type="text"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       {/* Genre Dropdown */}
-      <div className="mb-4">
+      <div className="mb-1">
         <label htmlFor="genre-select" className="block text-sm font-bold mb-2">Genre:</label>
         <select
           id="genre-select"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
@@ -116,11 +116,11 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
         </select>
       </div>
       {/* Platform dropdown */}
-      <div className="mb-4">
+      <div className="mb-1">
         <label htmlFor="platform-select" className="block text-sm font-bold mb-2">Platform:</label>
         <select
           id="platform-select"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           value={selectedPlatform}
           onChange={(e) => setSelectedPlatform(e.target.value)}
         >
@@ -132,11 +132,11 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
       </div>
       
       {/* Developer Dropdown */}
-      <div className="mb-4">
+      <div className="mb-1">
         <label htmlFor="developer-select" className="block text-sm font-bold mb-2">Developer:</label>
         <select
           id="developer-select"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           value={selectedDeveloper}
           onChange={(e) => setSelectedDeveloper(e.target.value)}>
           <option value="">Any</option>
@@ -147,12 +147,12 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
       </div>
       
       {/* Metacritic Score Input */}
-      <div className="mb-4">
+      <div className="mb-1">
         <label htmlFor="metacritic-score" className="block text-sm font-bold mb-2">Metacritic Score (1-100):</label>
         <input
           id="metacritic-score"
           type="number"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           min="1"
           max="100"
           value={score}
@@ -177,12 +177,12 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
     */}
       {/* Search Button */}
       {showSearch && !searchPerformed && (
-      <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
+      <button className="w-full mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Search Games</button>
       )}
       {showSearch && searchPerformed &&
       (
-        <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
+        <button className="w-full bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Perform New Search</button>
       )}
       {showSearch && searchPerformed && (

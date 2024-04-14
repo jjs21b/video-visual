@@ -77,7 +77,7 @@ const AppContent = () => {
 
   return (
     <div className="app flex min-h-screen bg-gray-800 text-white">
-      {(
+      {showHeader && ( 
         <div className="sidebar w-64"> {/* Adjust width as needed */}
           <Sidebar  setScore = {setScore} score = {score} setSelectedGenre = {setSelectedGenre} selectedGenre = {selectedGenre} 
           setSelectedDeveloper = {setSelectedDeveloper} selectedDeveloper = {selectedDeveloper} setSelectedPlatform = 
