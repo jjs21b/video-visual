@@ -10,10 +10,20 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
   //const [numberResults, setNumberResults] = useState(20);
   const location = useLocation();
   const showSearch = !location.pathname.startsWith('/game/');
+  const defaultGenre = '';
+  const defaultDeveloper = '';
+  const defaultPlatform = '';
+  const defaultScore = '';
+  const defaultTitle = '';
 
-  
-
+  const resetSearchOptions = () => {
+    setSelectedGenre(defaultGenre);
+    setSelectedDeveloper(defaultDeveloper);
+    setSelectedPlatform(defaultPlatform);
+    setScore(defaultScore);
+    setTitle(defaultTitle)
   // Fetch genres
+  }
   const fetchGenres = async () => {
     try{
       const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
@@ -120,19 +130,6 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
           ))}
         </select>
       </div>
-      {/* Metacritic Score Input */}
-      <div className="mb-4">
-        <label htmlFor="metacritic-score" className="block text-sm font-bold mb-2">Metacritic Score (1-100):</label>
-        <input
-          id="metacritic-score"
-          type="number"
-          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
-          min="1"
-          max="100"
-          value={score}
-          onChange={(e) => setScore(e.target.value)}
-        />
-      </div>
       
       {/* Developer Dropdown */}
       <div className="mb-4">
@@ -148,8 +145,21 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
           ))}
         </select>
       </div>
-
-    
+      
+      {/* Metacritic Score Input */}
+      <div className="mb-4">
+        <label htmlFor="metacritic-score" className="block text-sm font-bold mb-2">Metacritic Score (1-100):</label>
+        <input
+          id="metacritic-score"
+          type="number"
+          className="w-full bg-gray-700 border border-gray-600 text-white rounded p-2"
+          min="1"
+          max="100"
+          value={score}
+          onChange={(e) => setScore(e.target.value)}
+        />
+      </div>
+      
         
       {/* Number of results dropdown 
       <div className="mb-4">
@@ -175,6 +185,9 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
         <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Perform New Search</button>
       )}
+      <button onClick={resetSearchOptions} className="w-full mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        Reset Search Criteria
+      </button>
       </div>
     
 

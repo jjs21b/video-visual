@@ -126,7 +126,6 @@ const App = () => {
   return (
     <Router basename='/video-visual'>
       <AppContent />
-      
     </Router>
   );
 };
