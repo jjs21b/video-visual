@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner } from './ResultsDisplay';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
-const GameDetails = ({setSearchPerformed, addToWishlist}) => {
+const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
   const handleBackClick = () => {
     setSearchPerformed(true); // Update the searchPerformed state
     navigate('/'); // Navigate back to the main page
@@ -35,21 +36,35 @@ const GameDetails = ({setSearchPerformed, addToWishlist}) => {
   }, [id]);
 
   if (!gameDetails) return <div className = "text-4xl font-bold"><Spinner /></div>;
+  const isInWishlist = wishlist.some(game => game.id === gameDetails.id);
 
   return (
-    <div className="game-details p-4 bg-gray-900 text-white">
-      <button 
-      onClick={handleBackClick}
-      className="back-btn mb-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4
-       rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
-      >
-      <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" 
-      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
-      Back
-    </button>
+    <div className="game-details p-4 bg-gray-900 text-white relative">
+      <div className="flex justify-between items-center absolute right-4 left-4"> {/* Container for buttons */}
+        {/* Back Button */}
+        <button 
+          onClick={handleBackClick}
+          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+        >
+          <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Homepage
+        </button>
+
+        {/* Wishlist Button: Conditional Rendering */}
+        {isInWishlist ? (
+          <Link to="/wishlist" className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+            View in Wishlist
+          </Link>
+        ) : (
+          <button onClick={() => addToWishlist(gameDetails)} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+            Add to Wishlist
+          </button>
+        )}
+      </div>
     {/* Game Name */}
-    <h1 className="text-4xl text-center font-bold my-4 mt-[-2rem]">{gameDetails.name}</h1>
-    <button onClick={() => addToWishlist(gameDetails)}>Add to Wishlist</button>
+    <h1 className="text-4xl text-center font-bold my-4 mt-6">{gameDetails.name}</h1>
 
       {/* Game Images */}
       <div className={`flex ${gameDetails.background_image_additional ? 'justify-start gap-4' : 'justify-center'}`}>

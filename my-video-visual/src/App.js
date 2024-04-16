@@ -22,7 +22,9 @@ const AppContent = () => {
   const [title, setTitle]=useState('');
   const [moreGames, setMoreGames] = useState(false)
   const [query, setQuery] = useState('')
-  const [loading, setLoading ] = useState(false);
+  const [loading, setLoading ] = useState(false); // regular loading stae
+  const [showTop, setShowTop] = useState(false); // show top navigator
+  const [loadingMore, setLoadingMore] = useState(false); // specifically for load more games button
 
 
   const [wishlist, setWishlist] = useState(() => {
@@ -71,6 +73,7 @@ const AppContent = () => {
       setGames(data.results);
       setSearchPerformed(true);
       setLoading(false);  // Stop loading after data is fetched
+      setShowTop(false);
       setQuery(url);
       setPage(1);
       // console.log(data.next)
@@ -81,21 +84,22 @@ const AppContent = () => {
     }
   };
   const loadMoreGames = async () => {
-    setLoading(true);
+    setLoadingMore(true);
     try {
       let nextPage = page + 1;
       let url = `${query}&page=${nextPage}`;
       const response = await fetch(url);
       const data = await response.json();
       setGames(prevGames => [...prevGames, ...data.results]);
-      setLoading(false);
+      setLoadingMore(false);
       setPage(nextPage);
+      setShowTop(true);
       console.log(data.results.length)
       //console.log(data.next);
       setMoreGames(data.next !== null);
   
     } catch (error) {
-      setLoading(false);
+      setLoadingMore(false);
       console.error("Error fetching more games:", error);
     }
   };
@@ -121,9 +125,6 @@ const AppContent = () => {
 
        {/* Main Content Area */}
        <div className="flex-grow">
-       <nav>
-          <Link to="/">Home</Link> | <Link to="/wishlist">Wishlist</Link>
-        </nav>
         {/* Conditionally render "Search Results" text only if search has been performed and there are results */}
         {searchPerformed && showHeader && hasResults && (
           <header className="banner text-center py-5 bg-blue-900 shadow-xl mx-8">
@@ -149,8 +150,8 @@ const AppContent = () => {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<GamesDisplay games={games} loadMoreGames = {loadMoreGames} moreGames = {moreGames}
-          loading = {loading}/>} />
-          <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist}/>} />
+          showTop = {showTop} loading = {loading} loadingMore={loadingMore}/>} />
+          <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist} wishlist={wishlist}/>} />
           <Route path="/wishlist" element={<WishList wishlist={wishlist} removeFromWishlist={removeFromWishlist} 
           setWishlist ={setWishlist} />} />
         </Routes>

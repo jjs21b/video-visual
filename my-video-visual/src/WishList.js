@@ -9,7 +9,13 @@ const WishList = ({ wishlist, removeFromWishlist, setWishlist }) => {
     };
     return (
         <div className="wishlist-container bg-gray-800 p-8 min-h-screen relative">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <Link to="/" className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full duration-300 ease-in-out">
+            <svg className="inline mr-2 w-4 h-4 mt-[-3.75px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+            Homepage
+          </Link>
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {wishlist.map(game => (
               <div key={game.id} className="game-card bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out flex flex-col h-full">
                 {game.background_image ? (
