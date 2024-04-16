@@ -9,7 +9,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
   const [platforms, setPlatforms] = useState([]);
   //const [numberResults, setNumberResults] = useState(20);
   const location = useLocation();
-  const showSearch = !location.pathname.startsWith('/game/');
+  const showSearch = location.pathname === '/';
   const defaultGenre = '';
   const defaultDeveloper = '';
   const defaultPlatform = '';
@@ -176,16 +176,16 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
       </div>
     */}
       {/* Search Button */}
-      {showSearch && !searchPerformed && (
+      {!searchPerformed && (
       <button className="w-full mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Search Games</button>
       )}
-      {showSearch && searchPerformed &&
+      {searchPerformed &&
       (
         <button className="w-full bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchGames}>
         Perform New Search</button>
       )}
-      {showSearch && searchPerformed && (
+      {searchPerformed && (
       <button onClick={resetSearchOptions} className="w-full mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
         Reset Search Criteria
       </button>

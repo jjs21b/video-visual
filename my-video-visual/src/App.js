@@ -9,7 +9,8 @@ import WishList from './WishList';
 
 const AppContent = () => {
   const location = useLocation(); // Hook to access the current location
-  const showHeader = !location.pathname.startsWith('/game/'); // Show header only on the front page
+  const showHeader = location.pathname === '/';
+  // Show header only on the front page
   const [games, setGames] = useState([]);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const hasResults = games.length > 0; // Check if there are any games in the state
@@ -22,6 +23,7 @@ const AppContent = () => {
   const [moreGames, setMoreGames] = useState(false)
   const [query, setQuery] = useState('')
   const [loading, setLoading ] = useState(false);
+
 
   const [wishlist, setWishlist] = useState(() => {
     // Initialize wishlist from cookies
