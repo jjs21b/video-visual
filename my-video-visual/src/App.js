@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import Sidebar from './sidebar';
 import GamesDisplay from './ResultsDisplay';
 import GameDetails from './GameDetails';
+import WishList from './WishList';
+
 
 const AppContent = () => {
   const location = useLocation(); // Hook to access the current location
@@ -19,6 +22,30 @@ const AppContent = () => {
   const [moreGames, setMoreGames] = useState(false)
   const [query, setQuery] = useState('')
   const [loading, setLoading ] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
+
+  // Load the wishlist from cookies when the component mounts
+  useEffect(() => {
+      const storedWishlist = Cookies.get('wishlist');
+      if (storedWishlist) {
+          setWishlist(JSON.parse(storedWishlist));
+      }
+  }, []);
+
+  // Update cookies whenever the wishlist changes
+  useEffect(() => {
+      Cookies.set('wishlist', JSON.stringify(wishlist), { expires: 7 });
+  }, [wishlist]);
+
+  const addToWishlist = (game) => {
+      const updatedWishlist = [...wishlist, game];
+      setWishlist(updatedWishlist);
+  };
+
+  const removeFromWishlist = (gameId) => {
+      const updatedWishlist = wishlist.filter(game => game.id !== gameId);
+      setWishlist(updatedWishlist);
+  };
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const fetchInitialGames = async () => {
