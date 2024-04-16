@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Sidebar from './sidebar';
 import GamesDisplay from './ResultsDisplay';
@@ -22,15 +22,12 @@ const AppContent = () => {
   const [moreGames, setMoreGames] = useState(false)
   const [query, setQuery] = useState('')
   const [loading, setLoading ] = useState(false);
-  const [wishlist, setWishlist] = useState([]);
 
-  // Load the wishlist from cookies when the component mounts
-  useEffect(() => {
-      const storedWishlist = Cookies.get('wishlist');
-      if (storedWishlist) {
-          setWishlist(JSON.parse(storedWishlist));
-      }
-  }, []);
+  const [wishlist, setWishlist] = useState(() => {
+    // Initialize wishlist from cookies
+    const savedWishlist = Cookies.get('wishlist');
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  });
 
   // Update cookies whenever the wishlist changes
   useEffect(() => {
@@ -122,6 +119,9 @@ const AppContent = () => {
 
        {/* Main Content Area */}
        <div className="flex-grow">
+       <nav>
+          <Link to="/">Home</Link> | <Link to="/wishlist">Wishlist</Link>
+        </nav>
         {/* Conditionally render "Search Results" text only if search has been performed and there are results */}
         {searchPerformed && showHeader && hasResults && (
           <header className="banner text-center py-5 bg-blue-900 shadow-xl mx-8">
@@ -148,7 +148,9 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<GamesDisplay games={games} loadMoreGames = {loadMoreGames} moreGames = {moreGames}
           loading = {loading}/>} />
-          <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed}/>} />
+          <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist}/>} />
+          <Route path="/wishlist" element={<WishList wishlist={wishlist} removeFromWishlist={removeFromWishlist} 
+          setWishlist ={setWishlist} />} />
         </Routes>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner } from './ResultsDisplay';
 
-const GameDetails = ({setSearchPerformed}) => {
+const GameDetails = ({setSearchPerformed, addToWishlist}) => {
   const handleBackClick = () => {
     setSearchPerformed(true); // Update the searchPerformed state
     navigate('/'); // Navigate back to the main page
@@ -49,6 +49,8 @@ const GameDetails = ({setSearchPerformed}) => {
     </button>
     {/* Game Name */}
     <h1 className="text-4xl text-center font-bold my-4 mt-[-2rem]">{gameDetails.name}</h1>
+    <button onClick={() => addToWishlist(gameDetails)}>Add to Wishlist</button>
+
       {/* Game Images */}
       <div className={`flex ${gameDetails.background_image_additional ? 'justify-start gap-4' : 'justify-center'}`}>
       {gameDetails.background_image && (

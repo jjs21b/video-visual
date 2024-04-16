@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
-const ChildComponent = ({ wishlist, addToWishlist, removeFromWishlist }) => {
+const WishList = ({ wishlist, removeFromWishlist, setWishlist }) => {
     const clearWishlist = () => {
         setWishlist([]);
     };
@@ -12,9 +12,8 @@ const ChildComponent = ({ wishlist, addToWishlist, removeFromWishlist }) => {
                     <button onClick={() => removeFromWishlist(game.id)}>Remove</button>
                 </div>
             ))}
-            <button onClick={() => addToWishlist({ id: 'new_game', name: 'New Game' })}>Add New Game</button>
         </div>
     );
 };
 
-export default ChildComponent;
+export default WishList;
