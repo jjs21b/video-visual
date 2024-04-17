@@ -186,7 +186,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
         Perform New Search</button>
       )}
       {searchPerformed && (
-      <button onClick={resetSearchOptions} className="w-full mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+      <button onClick={resetSearchOptions} className="w-full mt-4 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded">
         Reset Search Criteria
       </button>
       )}

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import Sidebar from './sidebar';
 import GamesDisplay from './ResultsDisplay';
 import GameDetails from './GameDetails';
 import WishList from './WishList';
 
-
+const getInitialWishlist = () => {
+  const savedWishlist = localStorage.getItem('wishlist');
+  return savedWishlist ? JSON.parse(savedWishlist) : [];
+};
 const AppContent = () => {
   const location = useLocation(); // Hook to access the current location
   const showHeader = location.pathname === '/';
@@ -25,18 +27,14 @@ const AppContent = () => {
   const [loading, setLoading ] = useState(false); // regular loading stae
   const [showTop, setShowTop] = useState(false); // show top navigator
   const [loadingMore, setLoadingMore] = useState(false); // specifically for load more games button
+  const [wishlist, setWishlist] = useState(getInitialWishlist);
 
 
-  const [wishlist, setWishlist] = useState(() => {
-    // Initialize wishlist from cookies
-    const savedWishlist = Cookies.get('wishlist');
-    return savedWishlist ? JSON.parse(savedWishlist) : [];
-  });
-
-  // Update cookies whenever the wishlist changes
   useEffect(() => {
-      Cookies.set('wishlist', JSON.stringify(wishlist), { expires: 7 });
+    console.log('Saving wishlist to local storage:', wishlist);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
+  
 
   const addToWishlist = (game) => {
       const updatedWishlist = [...wishlist, game];
@@ -128,7 +126,7 @@ const AppContent = () => {
     <div className="flex-grow relative"> {/* Added relative positioning */}
       <Link to="/wishlist" className="back-btn absolute top-4 right-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full 
       duration-300 ease-in-out">
-      View Your Wishlist
+      View Wishlist
       <svg className="inline w-4 h-4 mt-[-3.75px] ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path> {/* Adjusted path for right-pointing arrow */}
       </svg>
@@ -146,7 +144,7 @@ const AppContent = () => {
       ))}
       {!searchPerformed && showHeader && (
         <header className="banner text-center py-4 shadow-xl mx-8">
-          <h1 className="text-4xl font-bold">Find Your New Favorite Game</h1>
+          <h1 className="text-4xl font-bold ">Find Your New Favorite Game</h1>
         </header>
       )}
 

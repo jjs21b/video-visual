@@ -54,11 +54,13 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
 
         {/* Wishlist Button: Conditional Rendering */}
         {isInWishlist ? (
-          <Link to="/wishlist" className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+          <Link to="/wishlist" className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-full transition 
+          duration-300 ease-in-out">
             View in Wishlist
           </Link>
         ) : (
-          <button onClick={() => addToWishlist(gameDetails)} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out">
+          <button onClick={() => addToWishlist(gameDetails)} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full
+           transition duration-300 ease-in-out">
             Add to Wishlist
           </button>
         )}
