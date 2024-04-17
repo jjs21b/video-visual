@@ -123,41 +123,42 @@ const AppContent = () => {
         </div>
       )}
 
-       {/* Main Content Area */}
-       <div className="flex-grow">
-        {/* Conditionally render "Search Results" text only if search has been performed and there are results */}
-        {searchPerformed && showHeader && hasResults && (
-          <header className="banner text-center py-5 bg-blue-900 shadow-xl mx-8">
-            <h1 className="text-3xl font-bold" >
-              Results 
-            </h1>
-          </header>
-        )}
-        {searchPerformed && showHeader && !hasResults && (
-          <header className="w-full py-8 text-center">
-            <h1 className="text-2xl font-bold">
-              No Results Found
-            </h1>
-          </header>
-        )}
-         {!searchPerformed && showHeader && (
-          <header className="banner text-center py-4 bg-blue-900 shadow-xl mx-8">
-            <h1 className="text-4xl font-bold">
-              Find The Game That's Right For You!
-            </h1>
-          </header>
-        )}
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<GamesDisplay games={games} loadMoreGames = {loadMoreGames} moreGames = {moreGames}
-          showTop = {showTop} loading = {loading} loadingMore={loadingMore}/>} />
-          <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist} wishlist={wishlist}/>} />
-          <Route path="/wishlist" element={<WishList wishlist={wishlist} removeFromWishlist={removeFromWishlist} 
-          setWishlist ={setWishlist} />} />
-        </Routes>
-      </div>
+
+    {/* Main Content Area */}
+    <div className="flex-grow relative"> {/* Added relative positioning */}
+      <Link to="/wishlist" className="back-btn absolute top-4 right-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full 
+      duration-300 ease-in-out">
+      View Your Wishlist
+      <svg className="inline w-4 h-4 mt-[-3.75px] ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path> {/* Adjusted path for right-pointing arrow */}
+      </svg>
+      </Link>
+
+      {/* Conditional Rendering for Headers */}
+      {searchPerformed && showHeader && (hasResults ? (
+        <header className="banner text-center py-4 shadow-xl mx-8">
+          <h1 className="text-3xl font-bold">Results</h1>
+        </header>
+      ) : (
+        <header className="w-full py-8 text-center">
+          <h1 className="text-2xl font-bold">No Results Found</h1>
+        </header>
+      ))}
+      {!searchPerformed && showHeader && (
+        <header className="banner text-center py-4 shadow-xl mx-8">
+          <h1 className="text-4xl font-bold">Find Your New Favorite Game</h1>
+        </header>
+      )}
+
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<GamesDisplay games={games} loadMoreGames={loadMoreGames} moreGames={moreGames} showTop={showTop} loading={loading} loadingMore={loadingMore} />} />
+        <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist} wishlist={wishlist} />} />
+        <Route path="/wishlist" element={<WishList wishlist={wishlist} removeFromWishlist={removeFromWishlist} setWishlist={setWishlist} />} />
+      </Routes>
     </div>
-  );
+  </div>
+);
 }
 
 

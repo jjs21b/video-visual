@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import React, { useState, useEffect } from 'react';
-import { Spinner } from './ResultsDisplay';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const WishList = ({ wishlist, removeFromWishlist, setWishlist }) => {
@@ -8,7 +7,7 @@ const WishList = ({ wishlist, removeFromWishlist, setWishlist }) => {
         setWishlist([]);
     };
     return (
-        <div className="wishlist-container bg-gray-800 p-8 min-h-screen relative">
+        <div className="wishlist-container bg-gray-800 p-4 min-h-screen relative">
           <Link to="/" className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full duration-300 ease-in-out">
             <svg className="inline mr-2 w-4 h-4 mt-[-3.75px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
