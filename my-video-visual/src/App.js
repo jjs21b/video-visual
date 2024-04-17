@@ -31,7 +31,7 @@ const AppContent = () => {
 
 
   useEffect(() => {
-    console.log('Saving wishlist to local storage:', wishlist);
+    //console.log('Saving wishlist to local storage:', wishlist);
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
   
@@ -124,6 +124,7 @@ const AppContent = () => {
 
     {/* Main Content Area */}
     <div className="flex-grow relative"> {/* Added relative positioning */}
+      {showHeader && (
       <Link to="/wishlist" className="back-btn absolute top-4 right-4 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full 
       duration-300 ease-in-out">
       View Wishlist
@@ -131,6 +132,7 @@ const AppContent = () => {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path> {/* Adjusted path for right-pointing arrow */}
       </svg>
       </Link>
+      )}
 
       {/* Conditional Rendering for Headers */}
       {searchPerformed && showHeader && (hasResults ? (

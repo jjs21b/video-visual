@@ -9,18 +9,19 @@ const WishList = ({ wishlist, removeFromWishlist, setWishlist }) => {
 
   return (
     <div className="wishlist-container p-4 bg-gray-800 min-h-screen relative">
-      <div className = "flex items-center justify-between">
-      <Link to="/" className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-300 ease-in-out">
-        <svg className="inline mr-2 w-4 mt-[-3.75px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
-        Homepage
-      </Link>
-      <button onClick={clearWishlist} className="absolute text-xl right-6 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded">
-        Clear Wishlist
-      </button>
+      <div className="flex items-center justify-between ">
+        <Link to="/" className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded duration-300 ease-in-out">
+          <svg className="inline mr-2 w-4 h-4 mt-[-3.75px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Homepage
+        </Link>
+        <h2 className="text-3xl font-bold font-montserrat text-green-500 ">Your Wishlist</h2>
+        <button onClick={clearWishlist} className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded">
+          Clear Wishlist
+        </button>
       </div>
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {wishlist.map(game => (
               <div key={game.id} className="game-card bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl 
               transition-shadow duration-300 ease-in-out flex flex-col h-full">
