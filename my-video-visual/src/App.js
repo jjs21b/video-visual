@@ -70,7 +70,7 @@ const AppContent = () => {
   const fetchGames = async () => {
     setLoading(true);
     try {
-      let url = `https://api.rawg.io/api/games?key=&page_size=40`;
+      let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
       if (selectedGenre) url += `&genres=${selectedGenre}`;
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score) url += `&metacritic=${score},100`;
