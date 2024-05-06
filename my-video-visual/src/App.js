@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react'; // Import useContext
 import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
 import Sidebar from './sidebar';
 import GamesDisplay from './ResultsDisplay';
 import GameDetails from './GameDetails';
 import WishList from './WishList';
-
+import { ErrorContext, ErrorProvider } from './ErrorHandler';
+import ErrorHandlerComponent from './ErrorComponent';
 const getInitialWishlist = () => {
   const savedWishlist = localStorage.getItem('wishlist');
   return savedWishlist ? JSON.parse(savedWishlist) : [];
 };
 const AppContent = () => {
+  const { handleError } = useContext(ErrorContext); // Access handleError function from context
   const location = useLocation(); // Hook to access the current location
   const showHeader = location.pathname === '/';
   // Show header only on the front page
@@ -46,16 +48,24 @@ const AppContent = () => {
       setWishlist(updatedWishlist);
   };
   const apiKey = process.env.REACT_APP_API_KEY;
-
+  //console.log(apiKey);
   const fetchInitialGames = async () => {
-    let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
-    const response = await fetch(url);
-    const data = await response.json();
-    setGames(data.results);
-    setMoreGames(true);
-    setQuery(url);
-    
+    const url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
+    //console.log(url);
+    try {
+      //console.log('Using API Key:', apiKey);
+      const response = await fetch(url);
+      //console.log(response);
+      const data = await response.json();
+      setGames(data.results);
+      setMoreGames(true);
+      setQuery(url);
+    } catch (error) {
+      console.log(error);
+      handleError(error.message); // Use context's handleError to set the error
+    }
   };
+  
   // Fetch games based on selected genre and developer
   const fetchGames = async () => {
     setLoading(true);
@@ -78,6 +88,7 @@ const AppContent = () => {
       setMoreGames(data.next !== null);
     } catch (error) {
       console.error("Error fetching games:", error);
+      handleError(error.message); // Use context's handleError to set the error
       setLoading(false);
     }
   };
@@ -98,6 +109,7 @@ const AppContent = () => {
   
     } catch (error) {
       setLoadingMore(false);
+      handleError(error.message); // Use context's handleError to set the error
       console.error("Error fetching more games:", error);
     }
   };
@@ -109,6 +121,14 @@ const AppContent = () => {
     }
     
   }, []); // Empty dependency array to run only on component mount
+
+  const { error } = useContext(ErrorContext); // Access the error state
+  if (error) {
+    // If there's an error, return the error display component or a simple error message
+    return (
+      <ErrorHandlerComponent/>
+    );
+  }
 
   return (
     <div className="app flex min-h-screen bg-gray-800 text-white">
@@ -165,9 +185,12 @@ const AppContent = () => {
 const App = () => {
 
   return (
-    <Router basename='/video-visual'>
-      <AppContent />
-    </Router>
+    <ErrorProvider>
+      <Router basename='/video-visual'>
+        <ErrorHandlerComponent/>
+        <AppContent />
+      </Router>
+    </ErrorProvider>
   );
 };
 

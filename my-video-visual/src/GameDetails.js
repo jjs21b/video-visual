@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner } from './ResultsDisplay';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
+  const { handleError } = useContext(ErrorContext); // Access handleError function from context
   const handleBackClick = () => {
     setSearchPerformed(true); // Update the searchPerformed state
     navigate('/'); // Navigate back to the main page
@@ -29,6 +30,7 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
         const data = await response.json();
         setGameDetails(data);
       } catch (error) {
+        handleError(error.message)
         console.error("Error fetching games:", error);
       }
     };
