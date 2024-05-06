@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Spinner } from './ResultsDisplay';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-
+import { ErrorContext} from './ErrorHandler';
 const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
-  const { handleError } = useContext(ErrorContext); // Access handleError function from context
+  const { handleError} = useContext(ErrorContext); // Access handleError function from context
   const handleBackClick = () => {
     setSearchPerformed(true); // Update the searchPerformed state
     navigate('/'); // Navigate back to the main page

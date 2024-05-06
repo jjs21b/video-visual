@@ -8,15 +8,9 @@ const ErrorHandlerComponent = () => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4">
         <div className="bg-white p-6 rounded shadow-lg text-center">
-          <h1 className="text-xl font-semibold text-red-500 mb-4">An error has occurred</h1>
+          <h1 className="text-xl font-semibold text-red-500 mb-4">Error: {error}</h1>
           <p className="mb-4">Unfortunately, there was an error processing your request. Please try refreshing the page, or check the API status for more details.</p>
           <div className="flex justify-around">
-            <button 
-              onClick={() => window.location.reload()} 
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Refresh Page
-            </button>
             <button 
               onClick={clearError} 
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

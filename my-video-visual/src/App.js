@@ -11,7 +11,7 @@ const getInitialWishlist = () => {
   return savedWishlist ? JSON.parse(savedWishlist) : [];
 };
 const AppContent = () => {
-  const { handleError } = useContext(ErrorContext); // Access handleError function from context
+  const { handleError} = useContext(ErrorContext); // Access handleError function from context
   const location = useLocation(); // Hook to access the current location
   const showHeader = location.pathname === '/';
   // Show header only on the front page
@@ -70,7 +70,7 @@ const AppContent = () => {
   const fetchGames = async () => {
     setLoading(true);
     try {
-      let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
+      let url = `https://api.rawg.io/api/games?key=&page_size=40`;
       if (selectedGenre) url += `&genres=${selectedGenre}`;
       if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
       if (score) url += `&metacritic=${score},100`;
@@ -121,8 +121,8 @@ const AppContent = () => {
     }
     
   }, []); // Empty dependency array to run only on component mount
-
-  const { error } = useContext(ErrorContext); // Access the error state
+  
+  const {error} = useContext(ErrorContext)
   if (error) {
     // If there's an error, return the error display component or a simple error message
     return (
@@ -187,7 +187,6 @@ const App = () => {
   return (
     <ErrorProvider>
       <Router basename='/video-visual'>
-        <ErrorHandlerComponent/>
         <AppContent />
       </Router>
     </ErrorProvider>

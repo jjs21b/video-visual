@@ -1,15 +1,16 @@
-import React, { useState, useEffect,  } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { ErrorContext } from './ErrorHandler';
 
 const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelectedDeveloper, selectedDeveloper
 ,setSelectedPlatform, selectedPlatform, fetchGames, searchPerformed, setTitle, title}) => {
+  const {handleError} = useContext(ErrorContext);
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
   const [developers, setDevelopers] = useState([]);
   const [platforms, setPlatforms] = useState([]);
   //const [numberResults, setNumberResults] = useState(20);
-  const location = useLocation();
-  const showSearch = location.pathname === '/';
+  //const location = useLocation();
+  //const showSearch = location.pathname === '/';
   const defaultGenre = '';
   const defaultDeveloper = '';
   const defaultPlatform = '';
@@ -24,6 +25,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
     setTitle(defaultTitle)
   // Fetch genres
   }
+
   const fetchGenres = async () => {
     try{
       const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
@@ -33,6 +35,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
     }
     catch(error) {
       console.error("Error fetching games:", error);
+      handleError(error.message);
     }
   };
   
@@ -46,6 +49,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
     }   
     catch(error) {
       console.error("Error fetching games:", error);
+      handleError(error.message);
     }
   };
   
@@ -67,6 +71,8 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
       setPlatforms(sortedPlatforms);
     }catch(error) {
       console.error("Error fetching games:", error);
+      handleError(error.message);
+
     }
   };
   
