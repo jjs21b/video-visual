@@ -77,7 +77,6 @@ const AppContent = () => {
       if (title) url += `&search=${title}`;
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data.results[20].id);
       setGames(data.results);
       setSearchPerformed(true);
       setLoading(false);  // Stop loading after data is fetched

@@ -5,19 +5,19 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { ErrorContext} from './ErrorHandler';
 const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
   const [gameDetails, setGameDetails] = useState(null);
+  const [showNext, setShowNext] = useState(false)
+  const [showPrev, setShowPrev] = useState(false);
   const { handleError} = useContext(ErrorContext); // Access handleError function from context
+  const location = useLocation()
+  let { gameIndex } = location.state || {};
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const apiKey = process.env.REACT_APP_API_KEY;
   const handleBackClick = () => {
     setSearchPerformed(true); // Update the searchPerformed state
     navigate('/'); // Navigate back to the main page
   }
-  const location = useLocation()
-  let { gameIndex } = location.state || {};
 
-  
-  const { id } = useParams();
-  
-  const navigate = useNavigate();
-  const apiKey = process.env.REACT_APP_API_KEY;
   const processDescription = (description) => {
     // Assuming "Descripción en español:" marks the beginning of the Spanish portion
     const delimiter = "Español";
@@ -26,68 +26,97 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
     // Return the part before the delimiter if it exists, otherwise return the full description
     return parts.length > 1 ? parts[0].trim() : description;
   };
-
   const nextGame = () => {
-    gameIndex += 1;
-    
+    setGameDetails(null); // Reset game details state to trigger loading state
+    const nextIndex = gameIndex + 1; // Calculate the next index
+    console.log("Next index: ", nextIndex);
 
+    // Use optional chaining to safely access the id of the next game
+    const nextId = games[nextIndex]?.id;
+    if (nextId) {
+        // If nextId is defined, navigate to the next game
+        navigate(`/game/${nextId}`, { state: { gameIndex: nextIndex } });
+    } else {
+        // Handle cases where there is no valid next game
+        console.log("No valid next game available at index:", nextIndex);
+        // Optionally, handle this case in the UI, e.g., disable the Next button or show a message
+    }
+}
+  const prevGame = () =>{
+    setGameDetails(null);
+    const prevIndex = gameIndex - 1;
+    console.log("Prev index: ", prevIndex);
+    if (games[prevIndex]?.id !== undefined){
+      const prevId = games[prevIndex].id
+      navigate(`/game/${prevId}`,{ state: { gameIndex: prevIndex} });
+    }
   }
+
   useEffect(() => {
     const fetchGameDetails = async () => {
-      try{
-        console.log("current index", gameIndex);
-        console.log("current game", games[gameIndex].id);
+      if (!id) {
+        console.log("Invalid ID, skipping fetch");
+        return; // Exit the effect early if no valid ID
+      }
+  
+      try {
         const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
         const data = await response.json();
         setGameDetails(data);
+        setShowNext(games[gameIndex + 1]?.id !== undefined); // Safe navigation with optional chaining
+        setShowPrev(games[gameIndex - 1]?.id !== undefined);
       } catch (error) {
-        handleError(error.message)
+        handleError(error.message);
         console.error("Error fetching games:", error);
       }
     };
+  
     fetchGameDetails();
-  }, [id]);
-
+  }, [id, apiKey, games, gameIndex, setShowNext]);
   if (!gameDetails) return <div className = "text-4xl font-bold"><Spinner /></div>;
   const isInWishlist = wishlist.some(game => game.id === gameDetails.id);
   return (
-    <div className="game-details p-4 bg-gray-900 text-white relative">
-      {/* Adjust button position and style */}
-      <div className="flex justify-center space-x-2 absolute top-4 left-0 right-0">
+<div className="game-details p-4 bg-gray-900 text-white relative">
+  {/* Adjust button position and style */}
+  <div className="flex justify-between items-center absolute top-4 left-0 right-0 px-4">
+    {/* Left Aligned Buttons */}
+    <div>
       <button 
-          onClick={handleBackClick}
-          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex
-           items-center justify-center transition duration-300 ease-in-out"
-        >
-          <svg className="inline mr-2 w-4 h-4 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-          Previous
-        </button>
-        <button 
-          onClick={handleBackClick}
-          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center 
-          justify-center transition duration-300 ease-in-out"
-        >
-          Next
-          <svg className="inline ml-2 w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-        </button>
-      </div>
-      <div className="flex justify-between items-center absolute right-4 left-4"> {/* Container for buttons */}
-        {/* Back Button */}
-        <button 
-          onClick={handleBackClick}
-          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center 
-          justify-center transition duration-300 ease-in-out"
-        >
-          <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-          </svg>
-          Homepage
-        </button>
-
+        onClick={handleBackClick} // Assuming this should be handleHomePageClick or similar
+        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+      >
+        <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Homepage
+      </button>
+    </div>
+    
+    {/* Center Aligned Buttons */}
+    <div className="flex space-x-2">
+      {showPrev && (
+      <button 
+        onClick={prevGame}
+        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+      >
+        <svg className="inline mr-2 w-4 h-4 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Previous
+      </button>
+      )}
+      {showNext && ( 
+      <button 
+        onClick={nextGame} // This should be handleNextClick
+        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+      >
+        Next
+        <svg className="inline ml-2 w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+    )}
+    </div>
         {/* Wishlist Button: Conditional Rendering */}
         {isInWishlist ? (
           <Link to="/wishlist" className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-full transition 
