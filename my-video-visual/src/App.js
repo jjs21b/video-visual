@@ -37,7 +37,6 @@ const AppContent = () => {
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
   
-
   const addToWishlist = (game) => {
       const updatedWishlist = [...wishlist, game];
       setWishlist(updatedWishlist);
@@ -78,6 +77,7 @@ const AppContent = () => {
       if (title) url += `&search=${title}`;
       const response = await fetch(url);
       const data = await response.json();
+      console.log(data.results[20].id);
       setGames(data.results);
       setSearchPerformed(true);
       setLoading(false);  // Stop loading after data is fetched
@@ -173,7 +173,7 @@ const AppContent = () => {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<GamesDisplay games={games} loadMoreGames={loadMoreGames} moreGames={moreGames} showTop={showTop} loading={loading} loadingMore={loadingMore} />} />
-        <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist} wishlist={wishlist} />} />
+        <Route path="/game/:id" element={<GameDetails setSearchPerformed={setSearchPerformed} addToWishlist={addToWishlist} wishlist={wishlist} games = {games} />} />
         <Route path="/wishlist" element={<WishList wishlist={wishlist} removeFromWishlist={removeFromWishlist} setWishlist={setWishlist} />} />
       </Routes>
     </div>

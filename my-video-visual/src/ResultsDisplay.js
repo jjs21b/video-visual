@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
-const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadingMore}) => {
+const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadingMore }) => {
   return (
     <div className="games-container bg-gray-800 p-8 min-h-screen relative">
       {loading ? (
@@ -10,7 +10,7 @@ const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadi
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {games.map(game => (
+            {games.map((game, index) => (
               <div key={game.id} className="game-card bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out flex flex-col h-full">
                 {game.background_image ? (
                   <img src={game.background_image} alt={game.name} className="w-full h-48 object-cover" />
@@ -24,6 +24,7 @@ const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadi
                   <div className="mt-auto">
                     <Link 
                       to={`/game/${game.id}`}
+                      state={{ gameIndex: index }} // Pass the index within the array as part of the route state
                       className="more-info-btn block text-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out mb-2"
                     >
                       More Info
@@ -35,7 +36,7 @@ const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadi
           </div>
           {moreGames && (
             <div className="text-center mt-6">
-              {loadingMore ? ( // Conditional rendering for loading more games
+              {loadingMore ? (
                 <Spinner />
               ) : (
                 <button

@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Spinner } from './ResultsDisplay';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { ErrorContext} from './ErrorHandler';
-const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
+const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
+  const [gameDetails, setGameDetails] = useState(null);
   const { handleError} = useContext(ErrorContext); // Access handleError function from context
   const handleBackClick = () => {
     setSearchPerformed(true); // Update the searchPerformed state
     navigate('/'); // Navigate back to the main page
-  };
+  }
+  const location = useLocation()
+  let { gameIndex } = location.state || {};
+
   
   const { id } = useParams();
+  
   const navigate = useNavigate();
-  const [gameDetails, setGameDetails] = useState(null);
   const apiKey = process.env.REACT_APP_API_KEY;
   const processDescription = (description) => {
     // Assuming "Descripción en español:" marks the beginning of the Spanish portion
@@ -23,9 +27,16 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
     return parts.length > 1 ? parts[0].trim() : description;
   };
 
+  const nextGame = () => {
+    gameIndex += 1;
+    
+
+  }
   useEffect(() => {
     const fetchGameDetails = async () => {
       try{
+        console.log("current index", gameIndex);
+        console.log("current game", games[gameIndex].id);
         const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
         const data = await response.json();
         setGameDetails(data);
@@ -39,14 +50,37 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
 
   if (!gameDetails) return <div className = "text-4xl font-bold"><Spinner /></div>;
   const isInWishlist = wishlist.some(game => game.id === gameDetails.id);
-
   return (
     <div className="game-details p-4 bg-gray-900 text-white relative">
+      {/* Adjust button position and style */}
+      <div className="flex justify-center space-x-2 absolute top-4 left-0 right-0">
+      <button 
+          onClick={handleBackClick}
+          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex
+           items-center justify-center transition duration-300 ease-in-out"
+        >
+          <svg className="inline mr-2 w-4 h-4 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Previous
+        </button>
+        <button 
+          onClick={handleBackClick}
+          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center 
+          justify-center transition duration-300 ease-in-out"
+        >
+          Next
+          <svg className="inline ml-2 w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+      </div>
       <div className="flex justify-between items-center absolute right-4 left-4"> {/* Container for buttons */}
         {/* Back Button */}
         <button 
           onClick={handleBackClick}
-          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+          className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center 
+          justify-center transition duration-300 ease-in-out"
         >
           <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -68,7 +102,7 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist}) => {
         )}
       </div>
     {/* Game Name */}
-    <h1 className="text-4xl text-center font-bold my-4 mt-6">{gameDetails.name}</h1>
+    <h1 className="text-4xl text-center font-bold my-4 mt-10">{gameDetails.name}</h1>
 
       {/* Game Images */}
       <div className={`flex ${gameDetails.background_image_additional ? 'justify-start gap-4' : 'justify-center'}`}>

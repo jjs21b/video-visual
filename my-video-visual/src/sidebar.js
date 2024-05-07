@@ -16,7 +16,11 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
   const defaultPlatform = '';
   const defaultScore = '';
   const defaultTitle = '';
-
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+        fetchGames();
+    }
+  };
   const resetSearchOptions = () => {
     setSelectedGenre(defaultGenre);
     setSelectedDeveloper(defaultDeveloper);
@@ -104,6 +108,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
           className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={handleKeyPress} // Handle Enter key press
         />
       </div>
       {/* Genre Dropdown */}
@@ -114,6 +119,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
           className="w-full bg-gray-700 border border-gray-600 text-white rounded p-1.5"
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
+          
         >
           <option value="">Any</option>
           {genres.map(genre => (
@@ -163,6 +169,7 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
           max="100"
           value={score}
           onChange={(e) => setScore(e.target.value)}
+          onKeyDown={handleKeyPress} // Handle Enter key press
         />
       </div>
       
