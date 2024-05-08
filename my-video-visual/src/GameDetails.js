@@ -83,7 +83,8 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
     <div>
       <button 
         onClick={handleBackClick} // Assuming this should be handleHomePageClick or similar
-        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center
+         justify-center transition duration-300 ease-in-out"
       >
         <svg className="inline mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -97,7 +98,8 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
       {showPrev && (
       <button 
         onClick={prevGame}
-        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center
+         justify-center transition duration-300 ease-in-out"
       >
         <svg className="inline mr-2 w-4 h-4 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -108,7 +110,8 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
       {showNext && ( 
       <button 
         onClick={nextGame} // This should be handleNextClick
-        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex items-center justify-center transition duration-300 ease-in-out"
+        className="back-btn bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full shadow flex
+         items-center justify-center transition duration-300 ease-in-out"
       >
         Next
         <svg className="inline ml-2 w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,12 +122,13 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
     </div>
         {/* Wishlist Button: Conditional Rendering */}
         {isInWishlist ? (
-          <Link to="/wishlist" className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-full transition 
+          <Link to="/wishlist" className="bg-green-500 hover:bg-green-700 text-white py-2 px-6 rounded-full transition 
           duration-300 ease-in-out">
-            View in Wishlist
+            View Wishlist
           </Link>
         ) : (
-          <button onClick={() => addToWishlist(gameDetails)} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full
+          <button onClick={() => addToWishlist(gameDetails)} className="bg-blue-500 hover:bg-blue-700 text-white py-2
+           px-4 rounded-full
            transition duration-300 ease-in-out">
             Add to Wishlist
           </button>
@@ -139,7 +143,8 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
         <img src={gameDetails.background_image} alt="Main" className="w-full md:w-1/2 rounded-lg shadow-lg object-cover" /> // Added object-cover
       )}
       {gameDetails.background_image_additional && (
-        <img src={gameDetails.background_image_additional} alt="Additional" className="w-full md:w-1/2 rounded-lg shadow-lg object-cover" /> // Added w-full md:w-1/2 and object-cover
+        <img src={gameDetails.background_image_additional} alt="Additional" className="w-full md:w-1/2 rounded-lg shadow-lg
+         object-cover" /> // Added w-full md:w-1/2 and object-cover
       )}
     </div>
       {/* Description */}
@@ -151,7 +156,8 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
       {/* Official Website Button Centered */}
       {gameDetails.website && (
         <div className="text-center mb-8">
-          <a href={gameDetails.website} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+          <a href={gameDetails.website} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500
+           hover:bg-blue-700 text-white py-2 px-4 rounded">
             {gameDetails.name} Official Website
           </a>
         </div>

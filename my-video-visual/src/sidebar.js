@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { ErrorContext } from './ErrorHandler';
 
 const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelectedDeveloper, selectedDeveloper
-,setSelectedPlatform, selectedPlatform, fetchGames, searchPerformed, setTitle, title}) => {
+,setSelectedPlatform, selectedPlatform, fetchGames, searchPerformed, setTitle, title, fetchInitialGames}) => {
   const {handleError} = useContext(ErrorContext);
   const apiKey = process.env.REACT_APP_API_KEY;
   const [genres, setGenres] = useState([]);
@@ -26,7 +26,8 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
     setSelectedDeveloper(defaultDeveloper);
     setSelectedPlatform(defaultPlatform);
     setScore(defaultScore);
-    setTitle(defaultTitle)
+    setTitle(defaultTitle);
+    fetchInitialGames();
   // Fetch genres
   }
 
@@ -92,16 +93,16 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
   
 
   return (
-    <div className="p-3 min-w-64 bg-gray-800 text-white h-screen overflow-y-auto">
+    <div className="p-3 pr-6 min-w-64 bg-gray-800 text-white h-screen overflow-y-auto">
       {/* Text above Sidebar */}
-      <div className="w-full py-4 text-center">
+      <div className="w-full text-center">
         <h2 className="text-2xl font-semibold tracking-tight">
           Search Criteria
         </h2>
-    </div>
+      </div>
       {/* Title Input */}
-      <div className="mb-1">
-        <label htmlFor="title" className="block text-sm font-bold mb-2">Title:</label>
+      <div className="mt-5 mb-1">
+        <label htmlFor="title" className="block text-sm font-bold mb-2">Keywords:</label>
         <input
           id="title"
           type="text"

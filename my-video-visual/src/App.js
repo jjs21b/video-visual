@@ -49,6 +49,7 @@ const AppContent = () => {
   const apiKey = process.env.REACT_APP_API_KEY;
   //console.log(apiKey);
   const fetchInitialGames = async () => {
+    setLoading(true);
     const url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
     //console.log(url);
     try {
@@ -57,9 +58,11 @@ const AppContent = () => {
       //console.log(response);
       const data = await response.json();
       setGames(data.results);
+      setLoading(false);
       setMoreGames(true);
       setQuery(url);
     } catch (error) {
+      setLoading(false);
       console.log(error);
       handleError(error.message); // Use context's handleError to set the error
     }
@@ -136,7 +139,7 @@ const AppContent = () => {
           <Sidebar  setScore = {setScore} score = {score} setSelectedGenre = {setSelectedGenre} selectedGenre = {selectedGenre} 
           setSelectedDeveloper = {setSelectedDeveloper} selectedDeveloper = {selectedDeveloper} setSelectedPlatform = 
           {setSelectedPlatform} selectedPlatform = {selectedPlatform} fetchGames = {fetchGames} searchPerformed = {searchPerformed}
-           setTitle = {setTitle} title = {title}/>
+           setTitle = {setTitle} title = {title}  fetchInitialGames={fetchInitialGames}/>
         </div>
       )}
 
@@ -156,7 +159,7 @@ const AppContent = () => {
       {/* Conditional Rendering for Headers */}
       {searchPerformed && showHeader && (hasResults ? (
         <header className="banner text-center py-4 shadow-xl mx-8">
-          <h1 className="text-3xl font-bold">Results</h1>
+          <h1 className="text-4xl font-bold">Browse Games</h1>
         </header>
       ) : (
         <header className="w-full py-8 text-center">

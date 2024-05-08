@@ -1,18 +1,16 @@
-// ResultsDisplay.js
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 
 const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadingMore }) => {
   return (
-    <div className="games-container bg-gray-800 p-8 min-h-screen relative">
+    <div className="games-container bg-gradient-to-r from-gray-700 to-gray-900 p-5 min-h-screen relative">
       {loading ? (
-        <Spinner />  // Spinner for new search
+        <Spinner />  // Enhanced Spinner
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {games.map((game, index) => (
-              <div key={game.id} className="game-card bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl 
-              transition-shadow duration-300 ease-in-out flex flex-col h-full">
+              <div key={game.id} className="game-card bg-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out flex flex-col h-full">
                 {game.background_image ? (
                   <img src={game.background_image} alt={game.name} className="w-full h-48 object-cover" />
                 ) : (
@@ -25,9 +23,8 @@ const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadi
                   <div className="mt-auto">
                     <Link 
                       to={`/game/${game.id}`}
-                      state={{ gameIndex: index }} // Pass the index within the array as part of the route state
-                      className="more-info-btn block text-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 
-                      rounded transition duration-300 ease-in-out mb-2"
+                      state={{ gameIndex: index }}
+                      className="more-info-btn block text-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-300 ease-in-out mb-2"
                     >
                       More Info
                     </Link>
@@ -52,12 +49,10 @@ const GamesDisplay = ({ games, loadMoreGames, moreGames, showTop, loading, loadi
           )}
         </>
       )}
-      {showTop && <ScrollTopButton/>}
+      {showTop && <ScrollTopButton />}
     </div>
   );
 };
-
-
 
 const ScrollTopButton = () => {
   const scrollToTop = () => {
@@ -79,8 +74,8 @@ const ScrollTopButton = () => {
 
 export const Spinner = () => {
   return (
-    <div className="flex justify-center items-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    <div className="flex justify-center items-center mt-10">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-700"></div>
     </div>
   );
 };
