@@ -32,55 +32,73 @@ const Sidebar = ({ setScore, score, setSelectedGenre, selectedGenre, setSelected
   }
 
   const fetchGenres = async () => {
-    try{
-      const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
-      const data = await response.json();
-      const sortedGenres = data.results.sort((a, b) => a.name.localeCompare(b.name));
-      setGenres(sortedGenres);
-    }
-    catch(error) {
-      console.error("Error fetching games:", error);
-      handleError(error.message);
+    let attempts = 0;
+    const maxAttempts = 5;
+    let success = false;
+    while (attempts < maxAttempts && !success) {
+      try {
+        const response = await fetch(`https://api.rawg.io/api/genres?key=${apiKey}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setGenres(data.results.sort((a, b) => a.name.localeCompare(b.name)));
+        success = true; // break the loop on success
+      } catch (error) {
+        console.error("Attempt to fetch genres failed:", error);
+        attempts++;
+        if (attempts >= maxAttempts) {
+          handleError(error.message);
+          break
+        }
+      }
     }
   };
   
   // Fetch developers
   const fetchDevelopers = async () => {
-    try{
-      const response = await fetch(`https://api.rawg.io/api/developers?key=${apiKey}`);
-      const data = await response.json();
-      const sortedDevelopers = data.results.sort((a, b) => a.name.localeCompare(b.name));
-      setDevelopers(sortedDevelopers);
-    }   
-    catch(error) {
-      console.error("Error fetching games:", error);
-      handleError(error.message);
+    let attempts = 0;
+    const maxAttempts = 5;
+    let success = false;
+    while (attempts < maxAttempts && !success) {
+      try {
+        const response = await fetch(`https://api.rawg.io/api/developers?key=${apiKey}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        setDevelopers(data.results.sort((a, b) => a.name.localeCompare(b.name)));
+        success = true;
+      } catch (error) {
+        console.error("Attempt to fetch developers failed:", error);
+        attempts++;
+        if (attempts >= maxAttempts) {
+          handleError(error.message);
+          break; // Exit loop after the last attempt
+        }
+      }
     }
   };
   
-  // fetch parent platforms
+  
   const fetchPlatforms = async () => {
-    try {
-      const response = await fetch(`https://api.rawg.io/api/platforms?key=${apiKey}`);
-      const data = await response.json();
-      // Using a comparison function for reverse alphabetical sorting
-      const sortedPlatforms = data.results.sort((a, b) => {
-        if (a.name < b.name) {
-          return 1; // For reverse alphabetical order, return 1 when a is less than b
+    let attempts = 0;
+    const maxAttempts = 5;
+    let success = false;
+    while (attempts < maxAttempts && !success) {
+      try {
+        const response = await fetch(`https://api.rawg.io/api/platforms?key=${apiKey}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const data = await response.json();
+        // Sorting platforms in reverse alphabetical order as originally intended
+        setPlatforms(data.results.sort((a, b) => b.name.localeCompare(a.name)));
+        success = true; // break the loop on success
+      } catch (error) {
+        console.error("Attempt to fetch platforms failed:", error);
+        attempts++;
+        if (attempts >= maxAttempts) {
+          handleError(error.message);
+          break; // Exit loop after the last attempt
         }
-        if (a.name > b.name) {
-          return -1; // Return -1 when a is greater than b
-        }
-        return 0; // Return 0 if they're equal
-      });
-      setPlatforms(sortedPlatforms);
-    }catch(error) {
-      console.error("Error fetching games:", error);
-      handleError(error.message);
-
+      }
     }
   };
-  
 
   // Call fetch functions when the component mounts
   useEffect(() => {

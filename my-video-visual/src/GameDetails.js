@@ -54,25 +54,31 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
 
   useEffect(() => {
     const fetchGameDetails = async () => {
-      if (!id) {
-        console.log("Invalid ID, skipping fetch");
-        return; // Exit the effect early if no valid ID
-      }
-  
-      try {
-        const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
-        const data = await response.json();
-        setGameDetails(data);
-        setShowNext(games[gameIndex + 1]?.id !== undefined); // Safe navigation with optional chaining
-        setShowPrev(games[gameIndex - 1]?.id !== undefined);
-      } catch (error) {
-        handleError(error.message);
-        console.error("Error fetching games:", error);
+      let attempts = 0;
+      const maxAttempts = 5;
+      let success = false;
+      while (!success && attempts < maxAttempts) {
+        try {
+          const response = await fetch(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+          setGameDetails(data);
+          setShowNext(games[gameIndex + 1]?.id !== undefined);
+          setShowPrev(games[gameIndex - 1]?.id !== undefined);
+          success = true;
+        } catch (error) {
+          console.error("Attempt failed:", error);
+          attempts++;
+          if (attempts >= maxAttempts) {
+            handleError(error.message);
+          }
+        }
       }
     };
   
     fetchGameDetails();
-  }, [id, apiKey, games, gameIndex, setShowNext]);
+  }, [id, apiKey, games, gameIndex]);
+  
   if (!gameDetails) return <div className = "text-4xl font-bold"><Spinner /></div>;
   const isInWishlist = wishlist.some(game => game.id === gameDetails.id);
   return (
