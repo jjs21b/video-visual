@@ -29,7 +29,7 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
   const nextGame = () => {
     setGameDetails(null); // Reset game details state to trigger loading state
     const nextIndex = gameIndex + 1; // Calculate the next index
-    console.log("Next index: ", nextIndex);
+    //console.log("Next index: ", nextIndex);
 
     // Use optional chaining to safely access the id of the next game
     const nextId = games[nextIndex]?.id;
@@ -45,7 +45,7 @@ const GameDetails = ({setSearchPerformed, addToWishlist, wishlist, games}) => {
   const prevGame = () =>{
     setGameDetails(null);
     const prevIndex = gameIndex - 1;
-    console.log("Prev index: ", prevIndex);
+    //console.log("Prev index: ", prevIndex);
     if (games[prevIndex]?.id !== undefined){
       const prevId = games[prevIndex].id
       navigate(`/game/${prevId}`,{ state: { gameIndex: prevIndex} });

@@ -50,50 +50,97 @@ const AppContent = () => {
   //console.log(apiKey);
   const fetchInitialGames = async () => {
     setLoading(true);
+    let maxAttempts = 5;
+    let attempt= 0;
+    let success = false;
     const url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
     //console.log(url);
-    try {
-      //console.log('Using API Key:', apiKey);
-      const response = await fetch(url);
-      //console.log(response);
-      const data = await response.json();
-      setGames(data.results);
-      setLoading(false);
-      setMoreGames(true);
-      setQuery(url);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      handleError(error.message); // Use context's handleError to set the error
-    }
+    while (attempt < maxAttempts && !success)
+      try {
+        //console.log('Using API Key:', apiKey);
+        const response = await fetch(url);
+        if (!response.ok){
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        //console.log(response);
+        const data = await response.json();
+        setGames(data.results);
+        setLoading(false);
+        setMoreGames(true);
+        setQuery(url);
+        success = true;
+      } catch (error) {
+        attempt ++;
+        if (attempt >= maxAttempts) {
+          handleError(error.message); // Use context's handleError to set the error
+          setLoading(false);
+          break; // Exit the loop after the last attempt
+        }        
+
+      }
   };
   
   // Fetch games based on selected genre and developer
   const fetchGames = async () => {
     setLoading(true);
-    try {
-      let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
-      if (selectedGenre) url += `&genres=${selectedGenre}`;
-      if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
-      if (score) url += `&metacritic=${score},100`;
-      if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
-      if (title) url += `&search=${title}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      setGames(data.results);
-      setSearchPerformed(true);
-      setLoading(false);  // Stop loading after data is fetched
-      setShowTop(false);
-      setQuery(url);
-      setPage(1);
-      // console.log(data.next)
-      setMoreGames(data.next !== null);
-    } catch (error) {
-      console.error("Error fetching games:", error);
-      handleError(error.message); // Use context's handleError to set the error
-      setLoading(false);
-    }
-  };
+    let maxAttempts = 5;
+    let attempt= 0;
+    let success = false;
+    let url = `https://api.rawg.io/api/games?key=${apiKey}&page_size=40`;
+    if (selectedGenre) url += `&genres=${selectedGenre}`;
+    if (selectedDeveloper) url += `&developers=${selectedDeveloper}`;
+    if (score) url += `&metacritic=${score},100`;
+    if (selectedPlatform) url += `&platforms=${selectedPlatform}`;
+    if (title) url += `&search=${title}`;
+    while (attempt <= maxAttempts && !success){
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setGames(data.results);
+        setSearchPerformed(true);
+        setLoading(false);  // Stop loading after data is fetched
+        setShowTop(false);
+        setQuery(url);
+        setPage(1);
+        // console.log(data.next)
+        setMoreGames(data.next !== null);
+        success = true;
+      } catch (error) {
+        console.error(`Attempt ${attempt + 1} failed:`, error);
+        attempt++;
+        if (attempt >= maxAttempts) {
+          handleError(error.message); // Use context's handleError to set the error
+          setLoading(false);
+          break; // Exit the loop after the last attempt
+        }
+      }
+    };
+  }
+  useEffect(() => {
+    const preloadImages = async () => {
+      if (games && games.length > 0) {
+        for (const game of games) {
+          try {
+            const response = await fetch(`https://api.rawg.io/api/games/${game.id}?key=${apiKey}`);
+            const data = await response.json();
+            if (data.background_image_additional) {
+              const img = new Image();
+              img.src = data.background_image_additional; // Ensure using data from the fetched API
+            }
+          } catch (error) {
+            console.error(`Failed to load data for game ${game.id}: ${error}`);
+          }
+        }
+      }
+    };
+  
+    preloadImages(); // Call the function to start preloading
+  }, [games]); // Dependency array, re-run effect if games change
+
+    
   const loadMoreGames = async () => {
     setLoadingMore(true);
     try {
